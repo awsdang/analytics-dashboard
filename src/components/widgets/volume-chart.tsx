@@ -2,7 +2,7 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 import { Card } from "@/components/ui/card"
-
+import {ChartContainer, ChartTooltip, ChartTooltipContent  } from "@/components/ui/chart"
 
 export function VolumeChart() {
     const timeRange = "week"
@@ -10,10 +10,12 @@ export function VolumeChart() {
     const chartData = [
         { time: "2022-01-01T00:00:00.000Z", volume: 1000000 },
         { time: "2022-01-02T00:00:00.000Z", volume: 1200000 },
-        { time: "2022-01-03T00:00:00.000Z", volume: 1400000 },
+        { time: "2022-01-03T00:00:00.000Z", volume: 1800000 },
         { time: "2022-01-04T00:00:00.000Z", volume: 1600000 },
-        { time: "2022-01-05T00:00:00.000Z", volume: 1800000 },
-        { time: "2022-01-06T00:00:00.000Z", volume: 2000000 },
+        { time: "2022-01-05T00:00:00.000Z", volume: 1700000 },
+        { time: "2022-01-06T00:00:00.000Z", volume: 1800000 },
+        { time: "2022-01-07T00:00:00.000Z", volume: 2200000 },
+        { time: "2022-01-07T00:00:00.000Z", volume: 1700000 },
         { time: "2022-01-07T00:00:00.000Z", volume: 2200000 },
     ]
 
@@ -50,22 +52,15 @@ export function VolumeChart() {
 
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ChartContainer className="w-full h-full" config={{ title: { label: "Transaction Volume" }, description: { label: "Transaction volume over time (IQD)" } }}>
       <AreaChart
         data={chartData}
         margin={{
-          top: 5,
+          top: 20,
           right: 10,
           left: 10,
           bottom: 20,
-        }}
-      >
-        <defs>
-          <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-            <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-          </linearGradient>
-        </defs>
+        }}>
         <XAxis
           dataKey="time"
           tickFormatter={formatXAxis}
@@ -75,15 +70,15 @@ export function VolumeChart() {
           tickLine={false}
         />
         <YAxis tickFormatter={formatYAxis} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+        <CartesianGrid strokeDasharray="6 9" vertical={false} stroke="gray" opacity={50} />
         <Tooltip
           content={({ active, payload }) => {
             if (active && payload && payload.length) {
               return (
-                <Card className="p-2 border shadow-sm">
-                  <div className="text-xs text-muted-foreground -mb-6">{formatXAxis(payload[0].payload.time)}</div>
-                  <div className="font-medium">{formatYAxis(Number(payload[0].value))}</div>
-                </Card>
+          <Card className="p-2 border shadow-sm">
+            <div className="text-xs text-muted-foreground -mb-6">{formatXAxis(payload[0].payload.time)}</div>
+            <div className="font-medium">{formatYAxis(Number(payload[0].value))}</div>
+          </Card>
               )
             }
             return null
@@ -92,13 +87,12 @@ export function VolumeChart() {
         <Area
           type="monotone"
           dataKey="volume"
-          stroke="hsl(var(--primary))"
-          fillOpacity={1}
-          fill="url(#colorVolume)"
+          stroke="black"
+          fill="none"
           strokeWidth={2}
         />
-      </AreaChart>
-    </ResponsiveContainer>
+            </AreaChart>
+    </ChartContainer>
   )
 }
 
