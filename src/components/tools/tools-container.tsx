@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { useStore } from "@/lib/store"
 import { useEffect, useState } from "react"
 
-function ToolsContainer({onRefresh, onExport}: {onRefresh: () => void, onExport: () => void}) {
+function ToolsContainer({isConnected, onRefresh, onExport}: {isConnected:boolean, onRefresh: () => void, onExport: () => void}) {
     const { setSearchQuery } = useStore()
     const [searchInput, setSearchInput] = useState<string>('')
     useEffect(() => {
@@ -29,7 +29,8 @@ function ToolsContainer({onRefresh, onExport}: {onRefresh: () => void, onExport:
                     <Button variant="outline" size="sm" onClick={onRefresh}>
                         <RefreshCw className="mr-2 h-4 w-4" />
                         Refresh
-                        <span className="ml-2 h-2 w-2 rounded-full bg-green-500" title="Real-time updates active"></span>
+                        {isConnected &&
+                        <span className="ml-2 h-2 w-2 rounded-full bg-green-500" title="Real-time updates active"></span>}
                     </Button>
                     <Button variant="outline" size="sm" onClick={onExport}>
                         <Download className="mr-2 h-4 w-4" />

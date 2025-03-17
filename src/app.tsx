@@ -1,30 +1,68 @@
 
 import Header from "@/components/header"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Download, RefreshCw } from "lucide-react"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Stats } from "@/components/widgets/stats"
-import { Filters } from "@/components/tools/filters"
 import { VolumeChart } from "@/components/widgets/volume-chart"
 import { Heatmap } from "@/components/widgets/heatmap"
-import { Input } from "@/components/ui/input"
-import { useState, useEffect, useCallback } from "react"
-import {TransactionData} from "./types/transactions"
+import { useStore } from "@/lib/store"
+import ToolsContainer from "@/components/tools/tools-container"
+import Widget from "@/components/widgets/widgetWrapper"
+import { TransactionData } from "@/types/transactions"
+import { useCallback, useEffect, useState } from "react"
 import { useWebSocket } from "@/hooks/use-websocket"
-import { useStore } from "./lib/store"
-import { mockAPI } from "./service/api"
-import ToolsContainer from "./components/tools/tools-container"
-import Widget from "./components/widgets/widgetWrapper"
+import { mockAPI } from "@/service/api"
+
 
 function App() {
-  
-  const {searchQuery, timeRange, filters, setTimeRange, setFilters } = useStore()
-  console.log(searchQuery);
+  const [data, setData] = useState<TransactionData | null>(null)
 
-  console.log(timeRange, filters);
+  const { searchQuery, timeRange, filters, setTimeRange, setFilters } = useStore()
+
+  const handleWebSocketMessage = useCallback((message: any) => {
+    console.log("Received WebSocket message:", message);
+    if (message.type === "newTransaction") {
+      // Only update if the transaction matches our filters
+      if (message.matchesFilters && message.updatedData) {
+        console.log("Updating data with filtered WebSocket data")
+        setData(message.updatedData)
+      } else {
+        console.log("Transaction doesn't match current filters, ignoring update")
+      }
+    }
+  }, [])
+
+  // Set up the WebSocket connection with filters and timeRange
+  const { connectionStatus } = useWebSocket({
+    url: "wss://api.qicard.iq/transactions/ws",
+    onMessage: handleWebSocketMessage,
+    filters: filters,
+    timeRange: timeRange,
+  })
+  const loadData = useCallback(async () => {
+    try {
+      const result = await mockAPI.getTransactionData(timeRange, {
+        filter: {
+          minAmount: filters.minAmount,
+          maxAmount: filters.maxAmount,
+          status: filters.status !== "all" ? filters.status : undefined,
+          location: filters.location,
+          startDate: filters.startDate,
+          endDate: filters.endDate,
+          merchantId: filters.merchantId,
+        },
+      })
+      setData(result)
+    } catch (err) {
+      console.error("Failed to fetch transaction data:", err)
+    } finally {
+    }
+  }, [timeRange, filters])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
+
   const handleRefresh = () => {
-    console.log('Refreshing data');
+    loadData()
   }
 
   const handleExport = () => {
@@ -39,43 +77,21 @@ function App() {
           <div className="flex items-center justify-between space-y-2">
           </div>
           <div className="container flex flex-col gap-4 mx-auto">
-            <ToolsContainer onRefresh={handleRefresh} onExport={handleExport}/>
-            
-            <Stats />
-            <Card className="col-span-1">
-              <CardHeader>
-                <CardTitle>Transaction Volume</CardTitle>
-                <CardDescription>Transaction volume over time (IQD)</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-              <VolumeChart/>
-              </CardContent>
-            </Card>
-            <Card className="col-span-1">
-              <CardHeader>
-                <CardTitle>Transaction Activity</CardTitle>
-                <CardDescription>Heatmap by hour of day</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-              <Heatmap/>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Merchant transactions</CardTitle>
-                <CardDescription>Complete history of all merchants transactions</CardDescription>
-              </CardHeader>
-              <CardContent>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Transaction Ledger</CardTitle>
-                <CardDescription>Complete history of all transactions</CardDescription>
-              </CardHeader>
-              <CardContent>
-              </CardContent>
-            </Card>
+            <ToolsContainer onRefresh={handleRefresh} onExport={handleExport} isConnected={connectionStatus === "connected"}/>
+            <Stats data={data} />
+            <Widget title="Transaction Volume" description="Transaction volume over time (IQD)" >
+              <VolumeChart className="h-[300px]" />
+            </Widget>
+            <Widget title="Transaction Activity" description="Heatmap by hour of day">
+              <Heatmap />
+            </Widget>
+
+            <Widget title="Merchant transactions" description="Complete history of all merchants transactions">
+              <></>
+            </Widget>
+            <Widget title="Transaction Ledger" description="Complete history of all transactions">
+              <></>
+            </Widget>
           </div>
         </div>
       </div>

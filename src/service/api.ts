@@ -417,9 +417,9 @@ class DashboardAPIClass {
         }
       }
     };
-    if (!this.ws) return
-    connect();
     
+    connect();
+    if (!this.ws) return
     return this.ws as WebSocket;
   }
 
