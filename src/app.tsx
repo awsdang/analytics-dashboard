@@ -4,11 +4,33 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Download, RefreshCw } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Stats } from "./components/widgets/stats"
-import { Filters } from "./components/tools/filters"
-
+import { Stats } from "@/components/widgets/stats"
+import { Filters } from "@/components/tools/filters"
+import { VolumeChart } from "@/components/widgets/volume-chart"
+import { Heatmap } from "@/components/widgets/heatmap"
+import { Input } from "@/components/ui/input"
+import { useState, useEffect, useCallback } from "react"
+import {TransactionData} from "./types/transactions"
+import { useWebSocket } from "@/hooks/use-websocket"
+import { useStore } from "./lib/store"
+import { mockAPI } from "./service/api"
+import ToolsContainer from "./components/tools/tools-container"
+import Widget from "./components/widgets/widgetWrapper"
 
 function App() {
+  
+  const {searchQuery, timeRange, filters, setTimeRange, setFilters } = useStore()
+  console.log(searchQuery);
+
+  console.log(timeRange, filters);
+  const handleRefresh = () => {
+    console.log('Refreshing data');
+  }
+
+  const handleExport = () => {
+    console.log('Exporting data');
+  }
+
   return (
     <>
       <div className="flex min-h-screen flex-col">
@@ -17,65 +39,41 @@ function App() {
           <div className="flex items-center justify-between space-y-2">
           </div>
           <div className="container flex flex-col gap-4 mx-auto">
-
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="flex flex-row gap-4">
-          
-              <Filters />
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" >
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                  Refresh
-                  <span className="ml-2 h-2 w-2 rounded-full bg-green-500" title="Real-time updates active"></span>
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Download className="mr-2 h-4 w-4" />
-                  Export
-                </Button>
-              </div>
-            </div>
-
-
-
+            <ToolsContainer onRefresh={handleRefresh} onExport={handleExport}/>
+            
             <Stats />
-
             <Card className="col-span-1">
               <CardHeader>
                 <CardTitle>Transaction Volume</CardTitle>
                 <CardDescription>Transaction volume over time (IQD)</CardDescription>
               </CardHeader>
               <CardContent className="h-[300px]">
+              <VolumeChart/>
               </CardContent>
             </Card>
-
             <Card className="col-span-1">
               <CardHeader>
                 <CardTitle>Transaction Activity</CardTitle>
                 <CardDescription>Heatmap by hour of day</CardDescription>
               </CardHeader>
               <CardContent className="h-[300px]">
+              <Heatmap/>
               </CardContent>
             </Card>
-
-
             <Card>
               <CardHeader>
                 <CardTitle>Merchant transactions</CardTitle>
                 <CardDescription>Complete history of all merchants transactions</CardDescription>
               </CardHeader>
               <CardContent>
-
               </CardContent>
             </Card>
-
             <Card>
               <CardHeader>
                 <CardTitle>Transaction Ledger</CardTitle>
                 <CardDescription>Complete history of all transactions</CardDescription>
               </CardHeader>
               <CardContent>
-                
               </CardContent>
             </Card>
           </div>
