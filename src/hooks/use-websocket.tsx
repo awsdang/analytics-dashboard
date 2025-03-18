@@ -68,7 +68,6 @@ export function useWebSocket({
       timeRange,
       onMessage: (data: any) => {
         if (!isMounted) return
-        console.log("WebSocket message received in hook:", data)
 
         setLastMessage(data)
         if (onMessageRef.current) {
