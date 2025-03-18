@@ -18,11 +18,9 @@ function App() {
   const { searchQuery, timeRange, filters, setTimeRange, setFilters } = useStore()
 
   const handleWebSocketMessage = useCallback((message: any) => {
-    console.log("Received WebSocket message:", message);
     if (message.type === "newTransaction") {
       // Only update if the transaction matches our filters
       if (message.matchesFilters && message.updatedData) {
-        console.log("Updating data with filtered WebSocket data")
         setData(message.updatedData)
       } else {
         console.log("Transaction doesn't match current filters, ignoring update")
@@ -80,10 +78,12 @@ function App() {
             <ToolsContainer onRefresh={handleRefresh} onExport={handleExport} isConnected={connectionStatus === "connected"}/>
             <Stats data={data} />
             <Widget title="Transaction Volume" description="Transaction volume over time (IQD)" >
-              <VolumeChart className="h-[300px]" />
+              {data &&
+              <VolumeChart className="h-[300px]" data={data}/>}
             </Widget>
             <Widget title="Transaction Activity" description="Heatmap by hour of day">
-              <Heatmap />
+            {data &&
+              <Heatmap  data={data}/>}
             </Widget>
 
             <Widget title="Merchant transactions" description="Complete history of all merchants transactions">

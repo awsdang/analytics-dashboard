@@ -1,24 +1,35 @@
 
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts"
 
 import { Card } from "@/components/ui/card"
-import {ChartContainer, ChartTooltip, ChartTooltipContent  } from "@/components/ui/chart"
+import {ChartContainer  } from "@/components/ui/chart"
+import { TransactionData} from '@/types/transactions'
+import { useEffect, useState } from "react"
+import { useStore } from "@/lib/store"
 
-export function VolumeChart() {
-    const timeRange = "week"
-    
-    const chartData = [
-        { time: "2022-01-01T00:00:00.000Z", volume: 1000000 },
-        { time: "2022-01-02T00:00:00.000Z", volume: 1200000 },
-        { time: "2022-01-03T00:00:00.000Z", volume: 1800000 },
-        { time: "2022-01-04T00:00:00.000Z", volume: 1600000 },
-        { time: "2022-01-05T00:00:00.000Z", volume: 1700000 },
-        { time: "2022-01-06T00:00:00.000Z", volume: 1800000 },
-        { time: "2022-01-07T00:00:00.000Z", volume: 2200000 },
-        { time: "2022-01-07T00:00:00.000Z", volume: 1700000 },
-        { time: "2022-01-07T00:00:00.000Z", volume: 2200000 },
-    ]
+export function VolumeChart({className, data}: {data: TransactionData, className?: string}) {
+ const [chartData, setChartData] = useState<{time:string, volume:number}[]>([])
 
+  const {timeRange} = useStore()
+
+  useEffect(() => {
+    if (!data) return
+    setChartData(data.volumeOverTime.map((item) => ({
+      time: item.time,
+      volume: item.volume,
+    }
+
+  )))
+  },[data])
+
+  if (!data || chartData.length === 0) {
+    return (
+      <div className="flex h-[300px] w-full items-center justify-center">
+        <p className="text-sm text-muted-foreground">No data available</p>
+      </div>
+    )
+  }
+  
   const formatXAxis = (value: string) => {
     if (!value) return ""
 
@@ -52,6 +63,7 @@ export function VolumeChart() {
 
 
   return (
+    <div className={className}>
     <ChartContainer className="w-full h-full" config={{ title: { label: "Transaction Volume" }, description: { label: "Transaction volume over time (IQD)" } }}>
       <AreaChart
         data={chartData}
@@ -93,6 +105,7 @@ export function VolumeChart() {
         />
             </AreaChart>
     </ChartContainer>
+    </div>
   )
 }
 
