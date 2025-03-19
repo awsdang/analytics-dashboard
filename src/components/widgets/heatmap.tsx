@@ -24,7 +24,8 @@ export function Heatmap({ data }: { data: TransactionData }) {
 
   // State for saving the previous (old) data.
   // When currentData changes, we update oldData by dropping the last element.
-  const [oldData, setOldData] = useState(currentData)
+  const [_, setOldData] = useState(currentData)
+
   useEffect(() => {
     setOldData(currentData.slice(0, currentData.length - 1))
   }, [currentData])
@@ -127,7 +128,7 @@ export function Heatmap({ data }: { data: TransactionData }) {
 
     gridContent = (
       <div className="grid grid-cols-3 md:grid-cols-7 gap-1">
-        {days.map((day, index) => (
+        {days.map((day) => (
           <div className="text-xs font-medium text-center md:block hidden">{day}</div>
         ))}
         {currentData.map((item, index) => (
