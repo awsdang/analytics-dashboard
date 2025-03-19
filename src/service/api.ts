@@ -1,7 +1,7 @@
-import {Transaction, Merchant, MerchantDetails, PaginatedMerchantsResponse, MerchantFilterOptions, TransactionData} from '@/types/transactions'
-import {FilterOptions, SortOptions, PaginationOptions, UseWebSocketProps, PaginatedLedgerResponse} from '@/types/dashboard'
+import { Transaction, Merchant, MerchantDetails, PaginatedMerchantsResponse, TransactionData } from '@/types/transactions'
+import { FilterOptions, TransactionSortOptions, MerchantSortOptions, PaginationOptions, UseWebSocketProps, PaginatedLedgerResponse } from '@/types/dashboard'
 import { iraqiMerchants } from './data';
-import {generateCoherentTransaction, generateMerchantData, generateVolumeOverTime, generateActivityByHour, calculatePercentageChange, generateMerchants} from './api-utils'
+import { generateCoherentTransaction, generateVolumeOverTime, generateActivityByHour, calculatePercentageChange, generateMerchants } from './api-utils'
 
 // Mock API Class
 class DashboardAPIClass {
@@ -11,23 +11,25 @@ class DashboardAPIClass {
   private listeners: Map<string, ((data: TransactionData) => void)[]> = new Map();
   public ledger: Transaction[] = [];
   private previousData: TransactionData | null = null;
-  private currentTime: Date; // Simulated current time
+  public merchantCache: Map<string, Merchant> = new Map();
+  public currentTime: Date; // Simulated current time
   private previousPeriodData: {
     totalVolume: number;
     totalTransactions: number;
     activeUsers: number;
     failedTransactions: number;
   } = {
-    totalVolume: 0,
-    totalTransactions: 0,
-    activeUsers: 0,
-    failedTransactions: 0,
-  };
+      totalVolume: 0,
+      totalTransactions: 0,
+      activeUsers: 0,
+      failedTransactions: 0,
+    };
 
   private constructor() {
+    this.previousData
     // Initialize simulated current time to real current date (March 17, 2025)
     this.currentTime = new Date("2025-03-17T00:00:00Z");
-
+    this.merchants = generateMerchants(50)
     // Initialize ledger with historical data relative to currentTime
     this.ledger = [];
     iraqiMerchants.forEach((merchant) => {
@@ -46,16 +48,66 @@ class DashboardAPIClass {
     this.ledger.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
     // Initialize previous period data
+    this.initializeMerchantCache();
     this.calculatePreviousPeriodData();
   }
+
+  private updateLedgerAndCache(newTransactions: Transaction[]) {
+    newTransactions.forEach((txn) => {
+      this.ledger.unshift(txn); // Add to start of ledger
+      this.updateMerchantCache(txn); // Update cache
+    });
+    if (this.ledger.length > 10000) {
+      const removedTxns = this.ledger.splice(10000); // Remove old transactions
+      this.recomputeMerchantCacheForRemovedTxns(removedTxns);
+    }
+  }
+
+  private recomputeMerchantCacheForRemovedTxns(removedTxns: Transaction[]) {
+    removedTxns.forEach((txn) => {
+      const merchant = this.merchantCache.get(txn.merchantId);
+      if (merchant) {
+        merchant.transactionCount -= 1;
+        merchant.transactionVolume -= txn.amount;
+        if (merchant.transactionCount <= 0) {
+          this.merchantCache.delete(txn.merchantId);
+        }
+      }
+    });
+  }
+
+  private initializeMerchantCache() {
+    this.merchantCache.clear();
+    this.ledger.forEach((txn) => {
+      this.updateMerchantCache(txn);
+    });
+  }
+
+  private updateMerchantCache(txn: Transaction) {
+    const merchantId = txn.merchantId;
+    let merchant = this.merchantCache.get(merchantId);
+
+    if (!merchant) {
+      const extra = this.merchants.find(m => m.id === merchantId);
+      merchant = {
+        id: merchantId,
+        name: txn.merchantName,
+        transactionCount: 0,
+        transactionVolume: 0,
+        city: extra?.city || "",
+        joinedDate: extra?.joinedDate || new Date(0).toISOString(),
+      };
+      this.merchantCache.set(merchantId, merchant);
+    }
+
+    merchant.transactionCount += 1;
+    merchant.transactionVolume += txn.amount;
+  }
+
 
   private calculatePreviousPeriodData() {
     const currentPeriodStart = new Date(this.currentTime.getTime() - 7 * 24 * 60 * 60 * 1000); // Last 7 days
     const previousPeriodStart = new Date(this.currentTime.getTime() - 14 * 24 * 60 * 60 * 1000); // 7-14 days ago
-
-    const currentPeriodTxs = this.ledger.filter(
-      (tx) => new Date(tx.timestamp) >= currentPeriodStart && new Date(tx.timestamp) <= this.currentTime
-    );
 
     const previousPeriodTxs = this.ledger.filter(
       (tx) => new Date(tx.timestamp) >= previousPeriodStart && new Date(tx.timestamp) < currentPeriodStart
@@ -82,12 +134,13 @@ class DashboardAPIClass {
   ): TransactionData {
     if (newTransactions.length > 0) {
       this.ledger = [...newTransactions, ...this.ledger];
-      if (this.ledger.length > 500) {
-        this.ledger = this.ledger.slice(0, 500);
+      this.updateLedgerAndCache(newTransactions)
+      if (this.ledger.length > 20) {
+        this.ledger = this.ledger.slice(0, 20);
       }
     }
 
-    const transactions = this.ledger;
+    const transactions = this.ledger
 
     // Use currentTime instead of new Date()
     let currentPeriodStart: Date;
@@ -122,12 +175,12 @@ class DashboardAPIClass {
     const userChange = calculatePercentageChange(activeUsers, this.previousPeriodData.activeUsers);
     const failedChange = calculatePercentageChange(failedTransactions, this.previousPeriodData.failedTransactions);
 
-    const volumeOverTime = generateVolumeOverTime(transactions, timeRange);
-    const topMerchants = generateMerchantData(transactions);
-    const activityByHour = generateActivityByHour(transactions);
+    const volumeOverTime = generateVolumeOverTime(transactions, timeRange, this.currentTime);
+    const topMerchants = this.merchants;
+    const activityByHour = generateActivityByHour(transactions, timeRange, this.currentTime);
 
     const data: TransactionData = {
-      transactions,
+      transactions: this.ledger.sort().slice(0, 40),
       totalVolume,
       totalTransactions,
       activeUsers,
@@ -193,7 +246,6 @@ class DashboardAPIClass {
       this.ledger = filteredLedger;
       const data = this.computeTransactionData([], timeRange);
       this.ledger = originalLedger;
-
       return data;
     } catch (error) {
       console.error("Failed to fetch transaction data:", error);
@@ -204,7 +256,7 @@ class DashboardAPIClass {
   public async fetchPaginatedLedger(
     pagination: PaginationOptions,
     filter: FilterOptions = {},
-    sort?: SortOptions
+    sort?: TransactionSortOptions
   ): Promise<PaginatedLedgerResponse> {
     try {
       let result = [...this.ledger];
@@ -278,13 +330,13 @@ class DashboardAPIClass {
   }
 
   public connectWebSocket({
-    url,
     onMessage,
     reconnectInterval = 5000,
     maxReconnectAttempts = 5,
     filters = {},
     timeRange = "week",
     merchantId,
+    refreshInterval = 1000,
   }: UseWebSocketProps & { merchantId?: string }) {
     if (this.ws) {
       this.ws.close();
@@ -307,7 +359,7 @@ class DashboardAPIClass {
             if (parsedData.type === "updateTimeRange") {
               currentTimeRange = parsedData.timeRange;
             }
-          } catch (e) {}
+          } catch (e) { }
         },
         close: () => {
           if (intervalId) {
@@ -319,18 +371,18 @@ class DashboardAPIClass {
       const merchant = merchantId ? iraqiMerchants.find((m) => m.id === merchantId) : null;
       const intervalId = setInterval(() => {
         // Move time forward by 1 hour
-        this.currentTime.setHours(this.currentTime.getHours() + 1);
-
+        this.currentTime.setMilliseconds(this.currentTime.getMilliseconds() +  Math.round(Math.random()*10000000));
         const newTx = merchant
           ? generateCoherentTransaction(merchant.id, merchant.name, this.currentTime.toISOString())
           : generateCoherentTransaction(
-              iraqiMerchants[Math.floor(Math.random() * iraqiMerchants.length)].id,
-              iraqiMerchants[Math.floor(Math.random() * iraqiMerchants.length)].name,
-              this.currentTime.toISOString()
-            );
-        this.ledger.unshift(newTx);
+            iraqiMerchants[Math.floor(Math.random() * iraqiMerchants.length)].id,
+            iraqiMerchants[Math.floor(Math.random() * iraqiMerchants.length)].name,
+            this.currentTime.toISOString()
+          );
+          
 
-        if (this.ledger.length > 2000) this.ledger.pop();
+        this.updateLedgerAndCache([newTx]);
+
 
         let matchesFilters = true;
         if (currentFilters.minAmount !== undefined && newTx.amount < currentFilters.minAmount) {
@@ -391,13 +443,13 @@ class DashboardAPIClass {
             matchesFilters: false,
           });
         }
-      }, 5000);
+      }, refreshInterval);
 
       (this.ws as any).intervalId = intervalId;
       if (!this.ws) return;
 
       this.ws.close = () => {
-        console.log("Closing WebSocket connection");
+        // console.log("Closing WebSocket connection");
         clearInterval(intervalId);
       };
     };
@@ -417,10 +469,10 @@ class DashboardAPIClass {
         }
       }
     };
-    
+
     connect();
-    if (!this.ws) return
-    return this.ws as WebSocket;
+
+    return this.ws!;
   }
 
   private computeFilteredData(filters: FilterOptions, timeRange: "day" | "week" | "month" | "year"): TransactionData {
@@ -484,13 +536,36 @@ class DashboardAPIClass {
   }
 
   public async exportData(
+    timeRange: "day" | "week" | "month" | "year" = "week",
     format: "csv" | "json",
     filter: FilterOptions = {},
-    sort?: SortOptions,
+    sort?: TransactionSortOptions,
     merchantId?: string,
     transactionId?: string
   ): Promise<string> {
     let transactions = [...this.ledger];
+    
+    // Filter by time range using this.currentTime
+    let startDate: Date;
+    switch (timeRange) {
+      case "day":
+        startDate = new Date(this.currentTime.getTime() - 24 * 60 * 60 * 1000);
+        break;
+      case "week":
+        startDate = new Date(this.currentTime.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case "month":
+        startDate = new Date(this.currentTime.getTime() - 30 * 24 * 60 * 60 * 1000);
+        break;
+      case "year":
+        startDate = new Date(this.currentTime.getTime() - 365 * 24 * 60 * 60 * 1000);
+        break;
+      default:
+        startDate = new Date(this.currentTime.getTime() - 7 * 24 * 60 * 60 * 1000);
+    }
+    
+    transactions = transactions.filter((tx) => new Date(tx.timestamp) >= startDate);
+    
     if (merchantId) {
       transactions = transactions.filter((tx) => tx.merchantId === merchantId);
     }
@@ -577,26 +652,49 @@ class DashboardAPIClass {
       this.ws = null;
     }
   }
+
 }
 
 // Export a singleton instance for use throughout the app
 export const mockAPI = {
   getTransactionData: async (
     timeRange: "day" | "week" | "month" | "year" = "day",
-    options?: { filter?: FilterOptions; sort?: SortOptions }
+    options?: { filter?: FilterOptions; sort?: TransactionSortOptions }
   ): Promise<TransactionData> => {
     const api = DashboardAPIClass.getInstance();
     return api.fetchTransactionData(timeRange, options?.filter || {});
   },
 
   getTransactionHistory: async (
+    timeRange: "day" | "week" | "month" | "year" = "week",
     page = 1,
     pageSize = 10,
     filter: FilterOptions = {},
-    sort?: SortOptions,
+    sort?: TransactionSortOptions,
     searchQuery?: string
   ): Promise<PaginatedLedgerResponse> => {
     const api = DashboardAPIClass.getInstance();
+    const currentTime = api.currentTime
+
+    let startDate: Date;
+    switch (timeRange) {
+      case "day":
+        startDate = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000);
+        break;
+      case "week":
+        startDate = new Date(currentTime.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case "month":
+        startDate = new Date(currentTime.getTime() - 30 * 24 * 60 * 60 * 1000);
+        break;
+      case "year":
+        startDate = new Date(currentTime.getTime() - 365 * 24 * 60 * 60 * 1000);
+        break;
+      default:
+        startDate = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000);
+    }
+    filter.startDate = startDate.toISOString();
+
 
     if (searchQuery && searchQuery.trim() !== "") {
       const searchResults = await api.searchLedger(searchQuery);
@@ -635,11 +733,13 @@ export const mockAPI = {
         });
       }
 
+
       const totalItems = filteredResults.length;
       const totalPages = Math.ceil(totalItems / pageSize);
       const startIndex = (page - 1) * pageSize;
       const endIndex = startIndex + pageSize;
       const paginatedTransactions = filteredResults.slice(startIndex, endIndex);
+
 
       return {
         transactions: paginatedTransactions,
@@ -648,19 +748,19 @@ export const mockAPI = {
         currentPage: page,
       };
     }
-
     return api.fetchPaginatedLedger({ page, limit: pageSize }, filter, sort);
   },
 
   exportData: async (
+    timeRange: "day" | "week" | "month" | "year" = "week",
     format: "csv" | "json",
     filter: FilterOptions = {},
-    sort?: SortOptions,
+    sort?: TransactionSortOptions,
     merchantId?: string,
     transactionId?: string
   ): Promise<string> => {
     const api = DashboardAPIClass.getInstance();
-    return api.exportData(format, filter, sort, merchantId, transactionId);
+    return api.exportData(timeRange, format, filter, sort, merchantId, transactionId);
   },
 
   connectWebSocket: (props: UseWebSocketProps): WebSocket => {
@@ -675,87 +775,94 @@ export const mockAPI = {
     return transaction || null;
   },
 
-  getTransactionsByMerchant: async (merchantId: string, sort?: SortOptions): Promise<Transaction[]> => {
-    const api = DashboardAPIClass.getInstance();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const transactions = api.ledger.filter((tx) => tx.merchantId === merchantId);
-
-    if (sort) {
-      transactions.sort((a, b) => {
-        const aValue = a[sort.field];
-        const bValue = b[sort.field];
-        if (typeof aValue === "string" && typeof bValue === "string") {
-          return sort.direction === "asc" ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-        }
-        if (typeof aValue === "number" && typeof bValue === "number") {
-          return sort.direction === "asc" ? aValue - bValue : bValue - aValue;
-        }
-        return 0;
-      });
-    }
-
-    return transactions;
-  },
-
   getMerchants: async (
-    page = 1,
-    pageSize = 10,
-    filter: MerchantFilterOptions = {},
-    sort?: { field: keyof Merchant; direction: "asc" | "desc" },
+    timeRange: "day" | "week" | "month" | "year" = "week",
+    page: number = 1,
+    pageSize: number = 10,
+    filter: FilterOptions = {},
+    sort?: MerchantSortOptions,
     searchQuery?: string
   ): Promise<PaginatedMerchantsResponse> => {
     const api = DashboardAPIClass.getInstance();
-
-    if (!api.merchants || api.merchants.length === 0) {
-      api.merchants = iraqiMerchants.map((merchant) => {
-        const transactionCount = Math.floor(Math.random() * 5000) + 50;
-        const avgTransactionValue = Math.floor(Math.random() * 50000) + 5000;
-
-        return {
-          id: merchant.id,
-          name: merchant.name,
-          city: ["Baghdad", "Erbil", "Basra", "Mosul", "Najaf"][Math.floor(Math.random() * 5)],
-          transactionCount,
-          transactionVolume: transactionCount * avgTransactionValue,
-        };
-      });
-
-      if (api.merchants.length < 50) {
-        const additionalMerchants = generateMerchants(50 - api.merchants.length);
-        api.merchants = [...api.merchants, ...additionalMerchants];
-      }
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
+  
+    const currentTime = api.currentTime;
+    let startDate: Date;
+    switch (timeRange) {
+      case "day":
+        startDate = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000);
+        break;
+      case "week":
+        startDate = new Date(currentTime.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case "month":
+        startDate = new Date(currentTime.getTime() - 30 * 24 * 60 * 60 * 1000);
+        break;
+      case "year":
+        startDate = new Date(currentTime.getTime() - 365 * 24 * 60 * 60 * 1000);
+        break;
+      default:
+        startDate = new Date(currentTime.getTime() - 7 * 24 * 60 * 60 * 1000);
     }
-
-    let filteredMerchants = [...api.merchants];
-
+  
+    // Clone merchants from cache and filter by time range
+    let merchants = Array.from(api.merchantCache.values()).map((merchant) => {
+      const merchantTxns = api.ledger.filter(
+        (txn) => txn.merchantId === merchant.id && new Date(txn.timestamp) >= startDate
+      );
+      return {
+        ...merchant,
+        transactionCount: merchantTxns.length,
+        transactionVolume: merchantTxns.reduce((sum, txn) => sum + txn.amount, 0),
+      };
+    });
+  
+    // Apply filters
     if (searchQuery && searchQuery.trim() !== "") {
-      const lowerQuery = searchQuery.toLowerCase();
-      filteredMerchants = filteredMerchants.filter(
-        (merchant) =>
-          merchant.name.toLowerCase().includes(lowerQuery) ||
-          merchant.id.toLowerCase().includes(lowerQuery) ||
-          merchant.city.toLowerCase().includes(lowerQuery)
+      merchants = merchants.filter(
+        (m) => m.name.includes(searchQuery) || (m.city && m.city.includes(searchQuery))
       );
     }
-
-    if (filter.city && filter.city !== "all") {
-      filteredMerchants = filteredMerchants.filter((merchant) => merchant.city === filter.city);
+    if (filter.minAmount !== undefined) {
+      merchants = merchants.filter((m) => m.transactionVolume >= filter.minAmount!);
     }
-    if (filter.minTransactions !== undefined) {
-      filteredMerchants = filteredMerchants.filter((merchant) => merchant.transactionCount >= filter.minTransactions!);
+    if (filter.maxAmount !== undefined) {
+      merchants = merchants.filter((m) => m.transactionVolume <= filter.maxAmount!);
     }
-    if (filter.maxTransactions !== undefined) {
-      filteredMerchants = filteredMerchants.filter((merchant) => merchant.transactionCount <= filter.maxTransactions!);
+    if (filter.status && filter.status !== "all") {
+      merchants = merchants.filter((m) =>
+        api.ledger.some(
+          (txn) =>
+            txn.merchantId === m.id &&
+            txn.status === filter.status &&
+            new Date(txn.timestamp) >= startDate
+        )
+      );
     }
-    if (filter.minVolume !== undefined) {
-      filteredMerchants = filteredMerchants.filter((merchant) => merchant.transactionVolume >= filter.minVolume!);
+    if (filter.startDate) {
+      merchants = merchants.filter((m) =>
+        api.ledger.some(
+          (txn) => txn.merchantId === m.id && new Date(txn.timestamp) >= new Date(filter.startDate!)
+        )
+      );
     }
-    if (filter.maxVolume !== undefined) {
-      filteredMerchants = filteredMerchants.filter((merchant) => merchant.transactionVolume <= filter.maxVolume!);
+    if (filter.endDate) {
+      merchants = merchants.filter((m) =>
+        api.ledger.some(
+          (txn) => txn.merchantId === m.id && new Date(txn.timestamp) <= new Date(filter.endDate!)
+        )
+      );
     }
-
+    if (filter.name) {
+      merchants = merchants.filter((m) => m.name === filter.name);
+    }
+    if (filter.city) {
+      merchants = merchants.filter((m) => m.city === filter.city);
+    }
+  
+    // Apply sorting
     if (sort) {
-      filteredMerchants.sort((a, b) => {
+      merchants.sort((a, b) => {
         const aValue = a[sort.field];
         const bValue = b[sort.field];
         if (typeof aValue === "string" && typeof bValue === "string") {
@@ -767,13 +874,13 @@ export const mockAPI = {
         return 0;
       });
     }
-
-    const totalItems = filteredMerchants.length;
+  
+    // Pagination
+    const totalItems = merchants.length;
     const totalPages = Math.ceil(totalItems / pageSize);
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-    const paginatedMerchants = filteredMerchants.slice(startIndex, endIndex);
-
+    const paginatedMerchants = merchants.slice(startIndex, endIndex);
     return {
       merchants: paginatedMerchants,
       totalItems,
@@ -820,11 +927,12 @@ export const mockAPI = {
   },
 
   exportMerchants: async (
+    timeRange: "day" | "week" | "month" | "year" = "week",
     format: "csv" | "json",
-    filter: MerchantFilterOptions = {},
+    filter: FilterOptions = {},
     sort?: { field: keyof Merchant; direction: "asc" | "desc" }
   ): Promise<string> => {
-    const result = await mockAPI.getMerchants(1, 1000, filter, sort);
+    const result = await mockAPI.getMerchants(timeRange, 1, 1000, filter, sort);
     const merchants = result.merchants;
 
     if (format === "json") {

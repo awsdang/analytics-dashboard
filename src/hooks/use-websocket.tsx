@@ -1,116 +1,115 @@
-
-import { useEffect, useRef, useState, useCallback } from "react"
-import { mockAPI } from "@/service/api"
-import {UseWebSocketProps} from "@/types/dashboard"
+import { useEffect, useRef, useState, useCallback } from "react";
+import { mockAPI } from "@/service/api";
+import { UseWebSocketProps } from "@/types/dashboard";
+import { useStore } from "@/lib/store";
 
 export function useWebSocket({
-  url,
   onMessage,
   reconnectInterval = 3000,
   maxReconnectAttempts = 5,
   filters,
   timeRange,
   merchantId,
-  
 }: UseWebSocketProps) {
-  const [lastMessage, setLastMessage] = useState<any>(null)
-  const [connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected">("disconnected")
-  const socketRef = useRef<WebSocket | null>(null)
-  const onMessageRef = useRef(onMessage)
-  const filtersRef = useRef(filters)
-  const timeRangeRef = useRef(timeRange)
+  const [lastMessage, setLastMessage] = useState<any>(null);
+  const { connectionStatus, setConnectionStatus, refreshInterval } = useStore();
+  const socketRef = useRef<WebSocket | null>(null);
+  const onMessageRef = useRef(onMessage);
+  const filtersRef = useRef(filters);
+  const timeRangeRef = useRef(timeRange);
 
   // Update the refs when dependencies change
   useEffect(() => {
-    onMessageRef.current = onMessage
-  }, [onMessage])
+    onMessageRef.current = onMessage;
+  }, [onMessage]);
 
   useEffect(() => {
-    filtersRef.current = filters
-
-    // If the socket is connected, send the updated filters
+    filtersRef.current = filters;
     if (socketRef.current && connectionStatus === "connected") {
       socketRef.current.send(
         JSON.stringify({
           type: "updateFilters",
           filters,
-        }),
-      )
+        })
+      );
     }
-  }, [filters, connectionStatus])
+  }, [filters, connectionStatus]);
 
   useEffect(() => {
-    timeRangeRef.current = timeRange
-
-    // If the socket is connected, send the updated timeRange
+    timeRangeRef.current = timeRange;
     if (socketRef.current && connectionStatus === "connected") {
       try {
         socketRef.current.send(
           JSON.stringify({
             type: "updateTimeRange",
-            timeRange: timeRange, // Send the timeRange value directly
-          }),
-        )
+            timeRange,
+          })
+        );
       } catch (error) {
-        console.error("Error sending timeRange update:", error)
+        console.error("Error sending timeRange update:", error);
       }
     }
-  }, [timeRange, connectionStatus])
+  }, [timeRange, connectionStatus]);
 
   useEffect(() => {
-    let isMounted = true
-    setConnectionStatus("connecting")
+    let isMounted = true;
+    setConnectionStatus("connecting");
 
-    // Connect to the WebSocket with initial filters and timeRange
     socketRef.current = mockAPI.connectWebSocket({
-      url,
       filters,
       timeRange,
       onMessage: (data: any) => {
-        if (!isMounted) return
-
-        setLastMessage(data)
+        if (!isMounted) return;
+        setLastMessage(data);
         if (onMessageRef.current) {
-          onMessageRef.current(data)
+          onMessageRef.current(data);
         }
       },
       reconnectInterval,
       maxReconnectAttempts,
-      merchantId
-    })
+      merchantId,
+      refreshInterval,
+    });
 
-    // Set connected status after a short delay to simulate connection time
     const timer = setTimeout(() => {
       if (isMounted) {
-        setConnectionStatus("connected")
+        setConnectionStatus("connected");
       }
-    }, 500)
+    }, 500);
 
-    // Cleanup
     return () => {
-      isMounted = false
-      clearTimeout(timer)
+      isMounted = false;
+      clearTimeout(timer);
+      setConnectionStatus("disconnected");
       if (socketRef.current) {
-        socketRef.current.close()
+        socketRef.current.close();
       }
+    };
+  }, [reconnectInterval, maxReconnectAttempts, merchantId, refreshInterval]);
+
+  
+  useEffect(() => {
+    if (connectionStatus !== "disconnected") {
+      return;
     }
-  }, [url, reconnectInterval, maxReconnectAttempts, filters, timeRange])
+    socketRef.current?.close();
+    setConnectionStatus("disconnected");
+  }, [connectionStatus]);
 
   const sendMessage = useCallback(
     (data: any) => {
       if (socketRef.current && connectionStatus === "connected") {
-        socketRef.current.send(JSON.stringify(data))
+        socketRef.current.send(JSON.stringify(data));
       } else {
-        console.error("Cannot send message, WebSocket is not connected")
+        console.error("Cannot send message, WebSocket is not connected");
       }
     },
-    [connectionStatus],
-  )
+    [connectionStatus]
+  );
 
   return {
     sendMessage,
     lastMessage,
     connectionStatus,
-  }
+  };
 }
-

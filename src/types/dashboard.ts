@@ -1,4 +1,4 @@
-import { Transaction } from "./transactions"
+import { Transaction, Merchant } from "./transactions"
 
 export interface FilterOptions {
     minAmount?: number
@@ -8,10 +8,17 @@ export interface FilterOptions {
     endDate?: string // ISO 8601
     merchantId?: string
     location?: string
+    name?: string
+    city?: string
   }
   
-  export interface SortOptions {
-    field: keyof Transaction
+  export interface TransactionSortOptions {
+    field: keyof Transaction 
+    direction: "asc" | "desc"
+  }
+
+  export interface MerchantSortOptions {
+    field: keyof Merchant
     direction: "asc" | "desc"
   }
 
@@ -31,24 +38,23 @@ export interface DashboardState {
     activePage: string;
     timeRange: "day" | "week" | "month" | "year"
     filters: FilterOptions
-    sort: SortOptions
     merchantId: string | null
     transactionId: string | null
     setActivePage: (activePage:string) => void
     setTimeRange: (timeRange: "day" | "week" | "month" | "year") => void
     setFilters: (filters: Partial<FilterOptions>) => void
-    setSort: (sort: SortOptions) => void
     setMerchantId: (merchantId: string | null) => void
     setTransactionId: (transactionId: string | null) => void
     resetFilters: () => void
   }
   
 export interface UseWebSocketProps {
-  url: string
   onMessage?: (data: any) => void
   reconnectInterval?: number
   maxReconnectAttempts?: number
   filters?: FilterOptions
   timeRange?: "day" | "week" | "month" | "year"
   merchantId?: string
+  refreshInterval?:number
+  connectionStatus?: "connected" | "connecting" | "disconnected" ,
 }

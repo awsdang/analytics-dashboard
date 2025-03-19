@@ -1,25 +1,31 @@
 import { create } from "zustand"
-import type { FilterOptions, SortOptions } from "@/types/dashboard"
+import type { FilterOptions, TransactionSortOptions, MerchantSortOptions } from "@/types/dashboard"
 
 interface StoreState {
+    refreshInterval: number
+    connectionStatus: "connected" | "connecting" | "disconnected"
     timeRange: "day" | "week" | "month" | "year"
     filters: FilterOptions
     searchQuery: string
-    merchantSort: SortOptions
-    transactionSort: SortOptions
+    merchantSort: MerchantSortOptions
+    transactionSort: TransactionSortOptions
     merchantId: string | null
     transactionId: string | null
+    setRefreshInterval: (refreshInterval:number) => void
+    setConnectionStatus: (status: "connected" | "connecting" | "disconnected") => void
     setTimeRange: (timeRange: "day" | "week" | "month" | "year") => void
     setFilters: (filters: Partial<FilterOptions>) => void
     setSearchQuery: (searchQuery: string) => void
-    setMerchantSort: (sort: SortOptions) => void
-    setTransactionSort: (sort: SortOptions) => void
+    setMerchantSort: (sort: MerchantSortOptions) => void
+    setTransactionSort: (sort: TransactionSortOptions) => void
     setMerchantId: (merchantId: string | null) => void
     setTransactionId: (transactionId: string | null) => void
     resetFilters: () => void
 }
 
 export const useStore = create<StoreState>((set) => ({
+    refreshInterval: 5000,
+    connectionStatus: "connecting",
     timeRange: "week",
     filters: {
         minAmount: undefined,
@@ -32,7 +38,7 @@ export const useStore = create<StoreState>((set) => ({
     },
     searchQuery: "",
     merchantSort: {
-        field: "timestamp",
+        field: "transactionVolume",
         direction: "desc",
     },
     transactionSort: {
@@ -41,6 +47,8 @@ export const useStore = create<StoreState>((set) => ({
     },
     merchantId: null,
     transactionId: null,
+    setRefreshInterval: (refreshInterval) => set({ refreshInterval }),
+    setConnectionStatus: (status) => set({ connectionStatus: status }),
     setTimeRange: (timeRange) => set({ timeRange }),
     setFilters: (newFilters) =>
         set((state) => ({

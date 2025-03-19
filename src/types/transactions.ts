@@ -1,4 +1,3 @@
-import { FilterOptions } from "@/types/dashboard";
 
 
   export interface Transaction {
@@ -63,7 +62,8 @@ export interface Merchant {
     name: string
     transactionCount: number
     transactionVolume: number
-    city: string
+    city?: string
+    joinedDate?: string
 }
 
 export interface MerchantDetails extends Merchant {
@@ -98,10 +98,15 @@ export interface MerchantTransactionFilterOptions {
     location?: string
 }
 
-export interface MerchantFilterOptions {
-    city?: string
-    minTransactions?: number
-    maxTransactions?: number
-    minVolume?: number
-    maxVolume?: number
+
+
+export interface MerchantStatsData {
+  totalVolume: number
+  totalTransactions: number
+  activeUsers: number
+  averageTransactionTime: number
+  volumeChange: number
+  transactionChange: number
+  userChange: number
+  timeChange: number
 }
