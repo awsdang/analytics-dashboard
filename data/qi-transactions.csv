@@ -1,0 +1,170 @@
+id,amount,merchantName,status,timestamp,userId,location,currency
+txn_qvmmxa6-2025-03-24T07:35:28.285Z,319893,Al-Jadriya Cafe,failed,2025-03-24T07:35:28.285Z,user_cva9,Mosul,IQD
+txn_h3ku5im-2025-03-24T05:57:49.267Z,623698,Al-Rasheed Textile House,refunded,2025-03-24T05:57:49.267Z,user_fgkc,Basra,IQD
+txn_f1b8fvx-2025-03-24T04:47:06.274Z,71122,Al-Jadriya Cafe,failed,2025-03-24T04:47:06.274Z,user_qu53,Basra,IQD
+txn_5n6qa96-2025-03-24T04:20:45.107Z,626572,Baghdad Music Shop,failed,2025-03-24T04:20:45.107Z,user_d75h,Erbil,IQD
+txn_gzzii3n-2025-03-24T01:42:14.087Z,197037,Baghdad Stationery Hub,pending,2025-03-24T01:42:14.087Z,user_01u8,Mosul,IQD
+txn_nizt372-2025-03-24T00:24:32.645Z,192599,Al-Yarmouk Electronics,refunded,2025-03-24T00:24:32.645Z,user_kdky,Erbil,IQD
+txn_418mc96-2025-03-23T23:45:12.718Z,14163,Baghdad Bike Repairs,pending,2025-03-23T23:45:12.718Z,user_r27h,Mosul,IQD
+txn_7ye0h8n-2025-03-23T22:51:30.953Z,8222,Baghdad Paint Store,completed,2025-03-23T22:51:30.953Z,user_8hb3,Baghdad,IQD
+txn_i3r15y8-2025-03-23T21:21:56.789Z,331667,Baghdad Dates & Nuts,pending,2025-03-23T21:21:56.789Z,user_xmgu,Baghdad,IQD
+txn_e9907iy-2025-03-23T19:37:52.339Z,156112,Al-Kadhimiya Perfume Shop,pending,2025-03-23T19:37:52.339Z,user_0uf1,Mosul,IQD
+txn_wl2tg4w-2025-03-23T19:13:46.705Z,184657,Baghdad Handicrafts,completed,2025-03-23T19:13:46.705Z,user_vj1d,Erbil,IQD
+txn_4qxitbq-2025-03-23T16:41:38.807Z,217226,Al-Kindi Medical Supplies,completed,2025-03-23T16:41:38.807Z,user_mv8u,Najaf,IQD
+txn_6sccoei-2025-03-23T14:26:51.644Z,904822,Al-Kifah Furniture,pending,2025-03-23T14:26:51.644Z,user_41fv,Mosul,IQD
+txn_w1vflnd-2025-03-23T13:34:20.041Z,604330,Al-Karrada Mobile Repairs,refunded,2025-03-23T13:34:20.041Z,user_wxng,Najaf,IQD
+txn_74xr3mj-2025-03-23T11:55:54.329Z,555361,Al-Rusafa Tea House,pending,2025-03-23T11:55:54.329Z,user_dm7s,Najaf,IQD
+txn_byhyu3a-2025-03-23T10:33:31.133Z,103841,Al-Karrada Sweet House,completed,2025-03-23T10:33:31.133Z,user_1al5,Basra,IQD
+txn_dvbdnxs-2025-03-23T09:29:09.452Z,92662,Baghdad Paint Store,failed,2025-03-23T09:29:09.452Z,user_020p,Najaf,IQD
+txn_kqdw578-2025-03-23T06:59:41.416Z,411386,Al-Qadisiya Gift Shop,completed,2025-03-23T06:59:41.416Z,user_h5o0,Baghdad,IQD
+txn_08huh7f-2025-03-23T06:07:02.497Z,81395,Al-Mansour Pharmacy,completed,2025-03-23T06:07:02.497Z,user_i6l6,Erbil,IQD
+txn_yhfb4tg-2025-03-23T04:08:05.001Z,558362,Baghdad Carpets & Rugs,refunded,2025-03-23T04:08:05.001Z,user_rzt7,Basra,IQD
+txn_b7kuviu-2025-03-23T03:25:49.114Z,712257,Al-Mutanabbi Stationery,completed,2025-03-23T03:25:49.114Z,user_62ky,Erbil,IQD
+txn_m0x98te-2025-03-23T03:19:16.444Z,360696,Baghdad Shoe Emporium,completed,2025-03-23T03:19:16.444Z,user_5pya,Basra,IQD
+txn_iu5uviq-2025-03-23T01:16:19.172Z,278577,Baghdad Handicrafts,refunded,2025-03-23T01:16:19.172Z,user_e5vp,Mosul,IQD
+txn_ad0e6sl-2025-03-22T23:50:39.104Z,879102,Saadoun Kebab House,pending,2025-03-22T23:50:39.104Z,user_4e6a,Baghdad,IQD
+txn_hv4yf5u-2025-03-22T21:10:51.440Z,152556,Baghdad Dates & Nuts,failed,2025-03-22T21:10:51.440Z,user_mqgm,Basra,IQD
+txn_tl9xp36-2025-03-22T19:12:19.960Z,311320,Al-Bayaa Clothing,pending,2025-03-22T19:12:19.960Z,user_c6a1,Baghdad,IQD
+txn_ew67mmv-2025-03-22T19:12:13.487Z,347159,Baghdad Art Gallery,completed,2025-03-22T19:12:13.487Z,user_98fm,Basra,IQD
+txn_9xyfze1-2025-03-22T19:01:28.741Z,761172,Al-Mahmoudiya Butcher,pending,2025-03-22T19:01:28.741Z,user_db0f,Najaf,IQD
+txn_3e2ft0w-2025-03-22T16:58:57.950Z,550829,Baghdad Fish Market,pending,2025-03-22T16:58:57.950Z,user_tm13,Najaf,IQD
+txn_6mz4ju5-2025-03-22T15:51:30.321Z,26635,Saadoun Kebab House,completed,2025-03-22T15:51:30.321Z,user_uag6,Baghdad,IQD
+txn_qceq1ne-2025-03-22T15:04:03.186Z,487895,Al-Salihiya Bookshop,pending,2025-03-22T15:04:03.186Z,user_41nm,Basra,IQD
+txn_q9q0a0q-2025-03-22T13:30:13.928Z,802808,Baghdad Al-Zawraa Market,failed,2025-03-22T13:30:13.928Z,user_1k3s,Baghdad,IQD
+txn_slsmeiq-2025-03-22T12:51:19.144Z,365001,Al-Harthiya Jewelry,pending,2025-03-22T12:51:19.144Z,user_1dvj,Basra,IQD
+txn_mjqudtz-2025-03-22T12:40:47.229Z,813758,Al-Karkh Toy Store,failed,2025-03-22T12:40:47.229Z,user_2kxr,Najaf,IQD
+txn_mqklmc1-2025-03-22T12:28:37.560Z,694077,Baghdad Fresh Market,refunded,2025-03-22T12:28:37.560Z,user_r27t,Baghdad,IQD
+txn_kappfb5-2025-03-22T09:49:38.737Z,282367,Al-Mutanabbi Stationery,failed,2025-03-22T09:49:38.737Z,user_jj6u,Najaf,IQD
+txn_i962djx-2025-03-22T09:23:51.353Z,519505,Al-Salihiya Bookshop,refunded,2025-03-22T09:23:51.353Z,user_cgp2,Basra,IQD
+txn_eo40yy8-2025-03-22T08:45:27.705Z,558308,Baghdad Bike Repairs,pending,2025-03-22T08:45:27.705Z,user_kzai,Mosul,IQD
+txn_rlxjtdd-2025-03-22T08:16:02.572Z,818094,Al-Karrada Mobile Repairs,failed,2025-03-22T08:16:02.572Z,user_wlvi,Najaf,IQD
+txn_699vb64-2025-03-22T06:51:07.362Z,957433,Al-Rasheed Electronics,pending,2025-03-22T06:51:07.362Z,user_c4y9,Basra,IQD
+txn_9blvp2p-2025-03-22T05:26:37.306Z,34699,Al-Dora Grocery,failed,2025-03-22T05:26:37.306Z,user_z011,Erbil,IQD
+txn_b3we72s-2025-03-22T02:45:37.090Z,685489,Baghdad Paint Store,failed,2025-03-22T02:45:37.090Z,user_9vaj,Basra,IQD
+txn_htjgdj2-2025-03-22T01:10:46.138Z,292590,Al-Rasheed Textile House,refunded,2025-03-22T01:10:46.138Z,user_gt22,Erbil,IQD
+txn_ut68l0h-2025-03-21T23:51:58.722Z,148041,Baghdad Art Gallery,completed,2025-03-21T23:51:58.722Z,user_8j0k,Basra,IQD
+txn_l62oiw9-2025-03-21T23:38:23.713Z,235864,Al-Bayaa Clothing,pending,2025-03-21T23:38:23.713Z,user_v5qd,Basra,IQD
+txn_5q4pmmj-2025-03-21T21:16:36.686Z,989830,Baghdad Leather Goods,failed,2025-03-21T21:16:36.686Z,user_78mi,Najaf,IQD
+txn_hu99k6m-2025-03-21T18:33:33.293Z,32017,Baghdad Watch Repair,failed,2025-03-21T18:33:33.293Z,user_g57f,Basra,IQD
+txn_42vhr7q-2025-03-21T18:15:04.223Z,212743,Baghdad Fish Market,failed,2025-03-21T18:15:04.223Z,user_3hss,Baghdad,IQD
+txn_s0qet66-2025-03-21T16:38:14.884Z,304197,Al-Kadhimiya Perfume Shop,failed,2025-03-21T16:38:14.884Z,user_uy2t,Najaf,IQD
+txn_6wve3y1-2025-03-21T15:47:57.056Z,903245,Al-Karrada Sweet House,refunded,2025-03-21T15:47:57.056Z,user_rkmq,Erbil,IQD
+txn_h0p9f22-2025-03-21T14:35:55.345Z,523628,Al-Sayyidiya Sweets,refunded,2025-03-21T14:35:55.345Z,user_ljys,Erbil,IQD
+txn_1d8tdf4-2025-03-21T14:23:26.901Z,186257,Baghdad Stationery Hub,refunded,2025-03-21T14:23:26.901Z,user_fn8l,Baghdad,IQD
+txn_yimju85-2025-03-21T14:00:52.776Z,327053,Al-Rusafa Tea House,completed,2025-03-21T14:00:52.776Z,user_mla6,Baghdad,IQD
+txn_ft2wlwu-2025-03-21T12:44:14.481Z,55775,Baghdad Dates & Nuts,pending,2025-03-21T12:44:14.481Z,user_r84k,Baghdad,IQD
+txn_wt6kqqw-2025-03-21T11:19:56.339Z,607464,Al-Rasheed Electronics,pending,2025-03-21T11:19:56.339Z,user_svxz,Baghdad,IQD
+txn_wpl3kaj-2025-03-21T09:38:58.772Z,54463,Baghdad Shoe Emporium,pending,2025-03-21T09:38:58.772Z,user_l7a8,Najaf,IQD
+txn_asd4vbp-2025-03-21T08:02:28.803Z,79063,Baghdad Dates & Nuts,refunded,2025-03-21T08:02:28.803Z,user_nau9,Basra,IQD
+txn_z7g1z2o-2025-03-21T05:52:31.014Z,968144,Al-Ghazaliya Hardware,failed,2025-03-21T05:52:31.014Z,user_7obh,Erbil,IQD
+txn_pnu1hdk-2025-03-21T05:18:36.982Z,654384,Baghdad Watch Repair,pending,2025-03-21T05:18:36.982Z,user_t11g,Mosul,IQD
+txn_so7vphr-2025-03-21T04:01:36.037Z,342010,Al-Karkh Toy Store,pending,2025-03-21T04:01:36.037Z,user_03ah,Najaf,IQD
+txn_k8m7c46-2025-03-21T02:25:26.057Z,89455,Baghdad Flower Shop,refunded,2025-03-21T02:25:26.057Z,user_0mox,Erbil,IQD
+txn_27v9g3c-2025-03-20T23:40:38.294Z,846346,Baghdad Bike Repairs,completed,2025-03-20T23:40:38.294Z,user_mwti,Najaf,IQD
+txn_lrqqa8f-2025-03-20T21:49:48.953Z,382333,Al-Mutanabbi Stationery,refunded,2025-03-20T21:49:48.953Z,user_rqvm,Basra,IQD
+txn_91jcgg2-2025-03-20T21:35:34.066Z,899231,Al-Rusafa Tea House,refunded,2025-03-20T21:35:34.066Z,user_n088,Erbil,IQD
+txn_zfltw2w-2025-03-20T19:05:24.814Z,60859,Al-Ghazaliya Hardware,pending,2025-03-20T19:05:24.814Z,user_5dtf,Mosul,IQD
+txn_sr2wyqu-2025-03-20T16:43:07.371Z,478532,Baghdad Fish Market,refunded,2025-03-20T16:43:07.371Z,user_he8g,Erbil,IQD
+txn_sf0aia5-2025-03-20T15:33:04.955Z,838980,Al-Rusafa Tea House,refunded,2025-03-20T15:33:04.955Z,user_ncgs,Baghdad,IQD
+txn_13r996p-2025-03-20T15:13:42.117Z,612448,Al-Shorja Hardware,completed,2025-03-20T15:13:42.117Z,user_sbz6,Erbil,IQD
+txn_qz75h0r-2025-03-20T12:44:46.527Z,98860,Al-Rasheed Electronics,completed,2025-03-20T12:44:46.527Z,user_76xs,Mosul,IQD
+txn_9v6wd7y-2025-03-20T12:33:43.257Z,454774,Al-Zaafaraniya Tailors,pending,2025-03-20T12:33:43.257Z,user_4z91,Erbil,IQD
+txn_s31vjjg-2025-03-20T11:08:52.915Z,82929,Baghdad Stationery Hub,completed,2025-03-20T11:08:52.915Z,user_j0ua,Erbil,IQD
+txn_dixds6m-2025-03-20T10:55:32.365Z,325261,Al-Salihiya Bookshop,completed,2025-03-20T10:55:32.365Z,user_59zu,Najaf,IQD
+txn_z77tqu4-2025-03-20T09:06:42.877Z,371645,Baghdad Flower Shop,completed,2025-03-20T09:06:42.877Z,user_9s6p,Basra,IQD
+txn_bkjukk8-2025-03-20T07:15:35.422Z,85355,Al-Rasheed Electronics,failed,2025-03-20T07:15:35.422Z,user_3a48,Najaf,IQD
+txn_3da81vz-2025-03-20T06:45:52.897Z,205349,Al-Kadhimiya Perfume Shop,pending,2025-03-20T06:45:52.897Z,user_1h3f,Basra,IQD
+txn_n2r9j0v-2025-03-20T06:15:51.540Z,626053,Baghdad Shoe Emporium,completed,2025-03-20T06:15:51.540Z,user_o4cf,Baghdad,IQD
+txn_sncqhyi-2025-03-20T03:39:24.550Z,973240,Baghdad Leather Goods,refunded,2025-03-20T03:39:24.550Z,user_cjza,Erbil,IQD
+txn_8wx6bp2-2025-03-20T01:41:57.470Z,79967,Al-Amiriya Bakery,refunded,2025-03-20T01:41:57.470Z,user_5wgt,Najaf,IQD
+txn_sw0fzdw-2025-03-19T23:04:03.218Z,373298,Al-Qadisiya Gift Shop,failed,2025-03-19T23:04:03.218Z,user_jiir,Mosul,IQD
+txn_xgouygx-2025-03-19T22:39:13.566Z,214604,Baghdad Fresh Market,completed,2025-03-19T22:39:13.566Z,user_fccj,Baghdad,IQD
+txn_nepthzs-2025-03-19T21:13:07.190Z,544261,Baghdad Fish Market,pending,2025-03-19T21:13:07.190Z,user_gxeo,Basra,IQD
+txn_fjc59cf-2025-03-19T19:36:00.565Z,630919,Karrada Gold Souq,refunded,2025-03-19T19:36:00.565Z,user_r9sa,Basra,IQD
+txn_gpg8hxc-2025-03-19T17:33:34.241Z,589842,Al-Mahmoudiya Butcher,completed,2025-03-19T17:33:34.241Z,user_h4ve,Erbil,IQD
+txn_wc32teg-2025-03-19T14:56:21.306Z,960717,Al-Kindi Medical Supplies,refunded,2025-03-19T14:56:21.306Z,user_ekb1,Baghdad,IQD
+txn_k5pfo81-2025-03-19T14:34:14.524Z,175565,Karrada Gold Souq,failed,2025-03-19T14:34:14.524Z,user_t2oo,Mosul,IQD
+txn_sgtvv57-2025-03-19T11:52:02.958Z,465540,Al-Rusafa Tea House,refunded,2025-03-19T11:52:02.958Z,user_mww1,Basra,IQD
+txn_2ygtj0z-2025-03-19T10:55:03.644Z,112834,Al-Mutanabbi Stationery,pending,2025-03-19T10:55:03.644Z,user_0bmd,Baghdad,IQD
+txn_68zpl6k-2025-03-19T10:53:45.736Z,820555,Baghdad Spices & Herbs,completed,2025-03-19T10:53:45.736Z,user_xkso,Erbil,IQD
+txn_18cf18e-2025-03-19T10:33:20.943Z,147035,Al-Karrada Mobile Repairs,pending,2025-03-19T10:33:20.943Z,user_vowv,Baghdad,IQD
+txn_n7v3xxk-2025-03-19T08:32:07.653Z,813705,Saadoun Kebab House,refunded,2025-03-19T08:32:07.653Z,user_1z6h,Erbil,IQD
+txn_463h8mx-2025-03-19T06:54:53.907Z,35626,Baghdad Leather Goods,completed,2025-03-19T06:54:53.907Z,user_7lfi,Basra,IQD
+txn_s3pkyh5-2025-03-19T04:39:58.843Z,964350,Al-Karrada Mobile Repairs,pending,2025-03-19T04:39:58.843Z,user_azj2,Erbil,IQD
+txn_8sn243c-2025-03-19T02:45:52.746Z,769480,Saadoun Kebab House,refunded,2025-03-19T02:45:52.746Z,user_zrod,Baghdad,IQD
+txn_9l05qb6-2025-03-19T01:08:01.895Z,379775,Baghdad Watch Repair,pending,2025-03-19T01:08:01.895Z,user_ib7f,Baghdad,IQD
+txn_mxjdnff-2025-03-18T23:40:18.238Z,391024,Al-Jadriya Cafe,failed,2025-03-18T23:40:18.238Z,user_9hqf,Basra,IQD
+txn_c3uy23o-2025-03-18T22:50:53.254Z,19443,Al-Yarmouk Electronics,pending,2025-03-18T22:50:53.254Z,user_wzk6,Baghdad,IQD
+txn_ggsaget-2025-03-18T21:45:37.860Z,218098,Al-Bayaa Clothing,completed,2025-03-18T21:45:37.860Z,user_6jrg,Najaf,IQD
+txn_hyws2tk-2025-03-18T19:46:26.524Z,472148,Baghdad Dates & Nuts,refunded,2025-03-18T19:46:26.524Z,user_vbh3,Erbil,IQD
+txn_d0i1h1d-2025-03-18T19:28:58.214Z,600723,Al-Amiriya Bakery,pending,2025-03-18T19:28:58.214Z,user_08vh,Najaf,IQD
+txn_tukh2io-2025-03-18T17:20:36.950Z,305227,Al-Zaafaraniya Tailors,pending,2025-03-18T17:20:36.950Z,user_99lw,Mosul,IQD
+txn_cotz6c0-2025-03-18T16:00:06.558Z,685121,Al-Shorja Hardware,pending,2025-03-18T16:00:06.558Z,user_l0tr,Mosul,IQD
+txn_qr5ihhs-2025-03-18T15:19:54.898Z,113549,Baghdad Dates & Nuts,failed,2025-03-18T15:19:54.898Z,user_b7kv,Erbil,IQD
+txn_341n9t7-2025-03-18T12:40:42.674Z,266159,Karrada Gold Souq,completed,2025-03-18T12:40:42.674Z,user_zbqu,Basra,IQD
+txn_ugq5f0p-2025-03-18T10:46:23.782Z,620783,Baghdad Music Shop,refunded,2025-03-18T10:46:23.782Z,user_p1v1,Erbil,IQD
+txn_m3vv3nb-2025-03-18T10:23:40.238Z,254475,Baghdad Bike Repairs,pending,2025-03-18T10:23:40.238Z,user_zfs0,Najaf,IQD
+txn_o60zfj4-2025-03-18T10:23:12.000Z,130186,Al-Sadr Jewelry Store,failed,2025-03-18T10:23:12.000Z,user_lmlc,Baghdad,IQD
+txn_pd25xk8-2025-03-18T08:53:59.307Z,791469,Baghdad Art Gallery,failed,2025-03-18T08:53:59.307Z,user_yxbe,Baghdad,IQD
+txn_yoxcwmr-2025-03-18T07:15:19.022Z,219655,Karrada Gold Souq,pending,2025-03-18T07:15:19.022Z,user_h43u,Najaf,IQD
+txn_97b0atk-2025-03-18T05:33:05.053Z,65317,Al-Shorja Hardware,failed,2025-03-18T05:33:05.053Z,user_3cjr,Najaf,IQD
+txn_dzxmmvv-2025-03-18T04:55:13.865Z,147867,Al-Kadhimiya Perfume Shop,refunded,2025-03-18T04:55:13.865Z,user_wxne,Mosul,IQD
+txn_v40oz1w-2025-03-18T04:11:24.332Z,448913,Al-Qadisiya Gift Shop,pending,2025-03-18T04:11:24.332Z,user_j9v6,Erbil,IQD
+txn_j7noob7-2025-03-18T03:23:37.763Z,662110,Al-Ghazaliya Hardware,completed,2025-03-18T03:23:37.763Z,user_kw53,Najaf,IQD
+txn_rytk3nj-2025-03-18T01:06:44.237Z,622709,Baghdad Carpets & Rugs,completed,2025-03-18T01:06:44.237Z,user_zhwb,Mosul,IQD
+txn_rlgn202-2025-03-18T00:07:36.877Z,789558,Al-Sayyidiya Sweets,completed,2025-03-18T00:07:36.877Z,user_4sso,Basra,IQD
+txn_13n3pd5-2025-03-17T22:06:13.035Z,915671,Baghdad Leather Goods,refunded,2025-03-17T22:06:13.035Z,user_orf9,Mosul,IQD
+txn_szkmr0a-2025-03-17T20:34:00.000Z,524443,Baghdad Handicrafts,refunded,2025-03-17T20:34:00.000Z,user_n509,Basra,IQD
+txn_k0uh234-2025-03-17T20:34:00.000Z,170844,Al-Adhamiya Bakery,refunded,2025-03-17T20:34:00.000Z,user_y2co,Baghdad,IQD
+txn_ztnt5y5-2025-03-17T20:08:00.000Z,896043,Al-Rusafa Tea House,refunded,2025-03-17T20:08:00.000Z,user_pe1c,Najaf,IQD
+txn_2062nkv-2025-03-17T20:07:00.000Z,86266,Al-Sadr Jewelry Store,failed,2025-03-17T20:07:00.000Z,user_kak5,Basra,IQD
+txn_azfac72-2025-03-17T20:05:00.000Z,538506,Al-Sadr Jewelry Store,refunded,2025-03-17T20:05:00.000Z,user_591h,Mosul,IQD
+txn_9y7h9if-2025-03-17T19:54:00.000Z,134060,Abu Hanifa Coffee Shop,failed,2025-03-17T19:54:00.000Z,user_m6az,Najaf,IQD
+txn_kwzbwtc-2025-03-17T19:29:57.018Z,513654,Al-Dora Grocery,refunded,2025-03-17T19:29:57.018Z,user_ghx1,Najaf,IQD
+txn_emaya26-2025-03-17T19:21:00.000Z,316156,Al-Kindi Medical Supplies,failed,2025-03-17T19:21:00.000Z,user_ql5p,Mosul,IQD
+txn_9bragty-2025-03-17T18:48:00.000Z,660791,Al-Salihiya Bookshop,refunded,2025-03-17T18:48:00.000Z,user_h9zs,Erbil,IQD
+txn_oisc3i9-2025-03-17T18:47:00.000Z,956362,Baghdad Fish Market,failed,2025-03-17T18:47:00.000Z,user_ypyj,Mosul,IQD
+txn_hd70oxl-2025-03-17T18:44:00.000Z,25122,Baghdad Flower Shop,completed,2025-03-17T18:44:00.000Z,user_g1t9,Mosul,IQD
+txn_lcjfyls-2025-03-17T18:38:00.000Z,123639,Al-Amiriya Bakery,failed,2025-03-17T18:38:00.000Z,user_tss1,Basra,IQD
+txn_i0oimwk-2025-03-17T18:20:00.000Z,300799,Baghdad Bike Repairs,pending,2025-03-17T18:20:00.000Z,user_vh4y,Mosul,IQD
+txn_fdef1op-2025-03-17T18:09:00.000Z,353688,Baghdad Stationery Hub,refunded,2025-03-17T18:09:00.000Z,user_wre0,Mosul,IQD
+txn_je3suj5-2025-03-17T18:04:12.119Z,731921,Al-Shorja Hardware,refunded,2025-03-17T18:04:12.119Z,user_vzzo,Erbil,IQD
+txn_m54yque-2025-03-17T16:55:00.000Z,23857,Al-Adhamiya Bakery,refunded,2025-03-17T16:55:00.000Z,user_m6be,Mosul,IQD
+txn_kd7cc0a-2025-03-17T16:46:37.718Z,40244,Baghdad Auto Parts,failed,2025-03-17T16:46:37.718Z,user_l8m2,Basra,IQD
+txn_jvyb9jk-2025-03-17T16:20:15.488Z,66961,Al-Sayyidiya Sweets,pending,2025-03-17T16:20:15.488Z,user_5rdt,Najaf,IQD
+txn_dolkzzs-2025-03-17T15:24:00.000Z,253791,Al-Salihiya Bookshop,completed,2025-03-17T15:24:00.000Z,user_sozv,Mosul,IQD
+txn_8a5x65b-2025-03-17T15:19:00.000Z,20383,Al-Mansour Pharmacy,refunded,2025-03-17T15:19:00.000Z,user_50r4,Baghdad,IQD
+txn_uy3q3uy-2025-03-17T15:10:24.518Z,192675,Al-Amiriya Bakery,completed,2025-03-17T15:10:24.518Z,user_5lzn,Najaf,IQD
+txn_04z6nix-2025-03-17T15:09:00.000Z,373660,Baghdad Bike Repairs,failed,2025-03-17T15:09:00.000Z,user_7pm6,Erbil,IQD
+txn_i2by2dm-2025-03-17T15:00:00.000Z,121113,Al-Mansour Ceramic Crafts,completed,2025-03-17T15:00:00.000Z,user_9a7i,Erbil,IQD
+txn_lyrqg4e-2025-03-17T14:55:00.000Z,989232,Al-Kadhimiya Perfume Shop,completed,2025-03-17T14:55:00.000Z,user_zcsk,Mosul,IQD
+txn_lm92z6f-2025-03-17T14:47:00.000Z,110546,Al-Karrada Mobile Repairs,pending,2025-03-17T14:47:00.000Z,user_8nqj,Erbil,IQD
+txn_ukf5iwu-2025-03-17T14:26:00.000Z,349153,Al-Mahmoudiya Butcher,failed,2025-03-17T14:26:00.000Z,user_g3r9,Basra,IQD
+txn_tx56czy-2025-03-17T14:11:00.000Z,471223,Baghdad Paint Store,pending,2025-03-17T14:11:00.000Z,user_kllu,Mosul,IQD
+txn_2ml8xms-2025-03-17T13:53:00.000Z,107161,Al-Qadisiya Gift Shop,failed,2025-03-17T13:53:00.000Z,user_u6ih,Mosul,IQD
+txn_5tglrrv-2025-03-17T13:28:00.000Z,461778,Baghdad Music Shop,completed,2025-03-17T13:28:00.000Z,user_qz25,Erbil,IQD
+txn_9fuhoyv-2025-03-17T13:20:00.000Z,744094,Mutanabbi Bookstore,pending,2025-03-17T13:20:00.000Z,user_kq3h,Najaf,IQD
+txn_5da9986-2025-03-17T13:12:00.000Z,710480,Baghdad Art Gallery,completed,2025-03-17T13:12:00.000Z,user_2yys,Erbil,IQD
+txn_wsu2xas-2025-03-17T13:05:00.000Z,845790,Al-Zaafaraniya Tailors,failed,2025-03-17T13:05:00.000Z,user_cux0,Basra,IQD
+txn_pfka9ww-2025-03-17T12:48:00.000Z,593857,Al-Harthiya Jewelry,failed,2025-03-17T12:48:00.000Z,user_jh9u,Erbil,IQD
+txn_uis6hcv-2025-03-17T12:42:00.000Z,87537,Mutanabbi Bookstore,pending,2025-03-17T12:42:00.000Z,user_ew88,Basra,IQD
+txn_eyzvcyt-2025-03-17T12:41:00.000Z,447212,Baghdad Stationery Hub,failed,2025-03-17T12:41:00.000Z,user_hl2t,Mosul,IQD
+txn_9mz6fzo-2025-03-17T12:38:00.000Z,490427,Al-Karrada Sweet House,pending,2025-03-17T12:38:00.000Z,user_icpb,Mosul,IQD
+txn_8k4x0ra-2025-03-17T12:24:55.178Z,385576,Baghdad Fresh Market,failed,2025-03-17T12:24:55.178Z,user_98ee,Basra,IQD
+txn_lbcvgmo-2025-03-17T11:57:00.000Z,444035,Al-Jadriya Cafe,failed,2025-03-17T11:57:00.000Z,user_gpmw,Baghdad,IQD
+txn_9uvzd08-2025-03-17T11:49:00.000Z,347376,Baghdad Watch Repair,pending,2025-03-17T11:49:00.000Z,user_26r4,Erbil,IQD
+txn_tb4i0e4-2025-03-17T11:47:00.000Z,687177,Baghdad Art Gallery,pending,2025-03-17T11:47:00.000Z,user_7ntn,Baghdad,IQD
+txn_v0sghqd-2025-03-17T11:29:00.000Z,66285,Al-Mansour Ceramic Crafts,failed,2025-03-17T11:29:00.000Z,user_bofc,Erbil,IQD
+txn_lbvadpu-2025-03-17T10:49:00.000Z,910571,Al-Karrada Mobile Repairs,completed,2025-03-17T10:49:00.000Z,user_bclg,Baghdad,IQD
+txn_8a42s55-2025-03-17T10:41:00.000Z,437650,Al-Shaab Sports Store,pending,2025-03-17T10:41:00.000Z,user_tmwa,Basra,IQD
+txn_iu25tdr-2025-03-17T10:27:00.000Z,767388,Baghdad Watch Repair,failed,2025-03-17T10:27:00.000Z,user_519u,Najaf,IQD
+txn_luamywr-2025-03-17T10:05:00.000Z,541665,Baghdad Auto Parts,failed,2025-03-17T10:05:00.000Z,user_l36n,Baghdad,IQD
+txn_skv2ocw-2025-03-17T09:57:01.978Z,814931,Baghdad Handicrafts,completed,2025-03-17T09:57:01.978Z,user_jy8c,Najaf,IQD
+txn_n1msdtg-2025-03-17T09:46:00.000Z,979412,Al-Adhamiya Bakery,pending,2025-03-17T09:46:00.000Z,user_vzwj,Mosul,IQD
+txn_29nqsex-2025-03-17T09:43:00.000Z,574979,Baghdad Shoe Emporium,refunded,2025-03-17T09:43:00.000Z,user_8oeb,Erbil,IQD
+txn_oyx448s-2025-03-17T09:33:00.000Z,205434,Al-Mutanabbi Stationery,pending,2025-03-17T09:33:00.000Z,user_0igg,Erbil,IQD
+txn_xgtn7z6-2025-03-17T09:04:00.000Z,74435,Baghdad Al-Zawraa Market,refunded,2025-03-17T09:04:00.000Z,user_702c,Erbil,IQD
+txn_f4p73o2-2025-03-17T08:25:00.000Z,52852,Al-Rasheed Electronics,completed,2025-03-17T08:25:00.000Z,user_7ogc,Najaf,IQD
+txn_ovzdwtu-2025-03-17T07:59:00.000Z,850396,Al-Dora Grocery,refunded,2025-03-17T07:59:00.000Z,user_4ukf,Basra,IQD
+txn_3viiva5-2025-03-17T07:46:00.000Z,842614,Baghdad Flower Shop,failed,2025-03-17T07:46:00.000Z,user_9ng8,Mosul,IQD
+txn_r3ksntj-2025-03-17T07:39:00.000Z,565319,Al-Shorja Hardware,refunded,2025-03-17T07:39:00.000Z,user_ujn1,Basra,IQD
