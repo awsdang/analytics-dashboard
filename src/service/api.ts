@@ -12,7 +12,7 @@ class DashboardAPIClass {
   public ledger: Transaction[] = [];
   private previousData: TransactionData | null = null;
   public merchantCache: Map<string, Merchant> = new Map();
-  public currentTime: Date; // Simulated current time
+  public currentTime: Date;
   private previousPeriodData: {
     totalVolume: number;
     totalTransactions: number;
@@ -27,18 +27,23 @@ class DashboardAPIClass {
 
   private constructor() {
     this.previousData
-    // Initialize simulated current time to real current date (March 17, 2025)
-    this.currentTime = new Date("2025-03-17T00:00:00Z");
+    this.currentTime = new Date();
     this.merchants = generateMerchants(50)
-    // Initialize ledger with historical data relative to currentTime
     this.ledger = [];
     iraqiMerchants.forEach((merchant) => {
       for (let daysBack = 0; daysBack < 365; daysBack++) {
-        const txCount = Math.floor(Math.random() * 3) + 1; // 1-3 transactions per day per merchant
+        const txCount = Math.floor(Math.random() * 6) + 1; // 1-3 transactions per day per merchant
         for (let j = 0; j < txCount; j++) {
           const txTime = new Date(this.currentTime);
           txTime.setDate(txTime.getDate() - daysBack);
-          txTime.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60), 0, 0);
+          
+          if (daysBack === 0) {const startOfDay = new Date(txTime);
+            startOfDay.setHours(0, 0, 0, 0);
+            const randomTimestamp = startOfDay.getTime() + Math.random() * (this.currentTime.getTime() - startOfDay.getTime());
+            txTime.setTime(randomTimestamp);
+          } else {
+            txTime.setHours(Math.floor(Math.random() * 24),Math.floor(Math.random() * 60),Math.floor(Math.random() * 60),0);
+          }
           this.ledger.push(generateCoherentTransaction(merchant.id, merchant.name, txTime.toISOString()));
         }
       }
@@ -176,11 +181,9 @@ class DashboardAPIClass {
     const failedChange = calculatePercentageChange(failedTransactions, this.previousPeriodData.failedTransactions);
 
     const volumeOverTime = generateVolumeOverTime(transactions, timeRange, this.currentTime);
-    const topMerchants = this.merchants;
     const activityByHour = generateActivityByHour(transactions, timeRange, this.currentTime);
 
     const data: TransactionData = {
-      transactions: this.ledger.sort().slice(0, 40),
       totalVolume,
       totalTransactions,
       activeUsers,
@@ -190,7 +193,6 @@ class DashboardAPIClass {
       userChange,
       failedChange,
       volumeOverTime,
-      topMerchants,
       activityByHour,
     };
 
@@ -449,7 +451,6 @@ class DashboardAPIClass {
       if (!this.ws) return;
 
       this.ws.close = () => {
-        // console.log("Closing WebSocket connection");
         clearInterval(intervalId);
       };
     };
@@ -631,7 +632,6 @@ class DashboardAPIClass {
 
   private getFallbackData(): TransactionData {
     return {
-      transactions: [],
       totalVolume: 0,
       totalTransactions: 0,
       activeUsers: 0,
@@ -641,7 +641,6 @@ class DashboardAPIClass {
       userChange: 0,
       failedChange: 0,
       volumeOverTime: [],
-      topMerchants: [],
       activityByHour: [],
     };
   }
@@ -784,8 +783,7 @@ export const mockAPI = {
     searchQuery?: string
   ): Promise<PaginatedMerchantsResponse> => {
     const api = DashboardAPIClass.getInstance();
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
-  
+    
     const currentTime = api.currentTime;
     let startDate: Date;
     switch (timeRange) {

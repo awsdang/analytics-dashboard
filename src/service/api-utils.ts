@@ -6,7 +6,7 @@ export const generateCoherentTransaction = (merchantId: string, merchantName: st
   const statuses: Transaction["status"][] = ["completed", "pending", "failed", "refunded"];
   
   return {
-    id: `txn_${Math.random().toString(36).substring(2, 9)}-${timestamp}`,
+    id: `txn_${Math.random().toString(36).substring(2, 9)}`,
     amount: Math.floor(Math.random() * 1000000) + 1000,
     merchantId,
     merchantName,

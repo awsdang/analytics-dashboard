@@ -52,7 +52,7 @@ function App() {
           merchantId: filters.merchantId,
         },
       })
-      setData(result)      
+      setData(result)
     } catch (err) {
       console.error("Failed to fetch transaction data:", err)
     } finally {
@@ -69,7 +69,6 @@ function App() {
         transactionSort,
         searchQuery.trim() !== "" ? searchQuery : undefined,
       )
-      
       setTransactions(result.transactions)
 
       setTransactionProps({
@@ -85,7 +84,6 @@ function App() {
   
   const loadMerchants = useCallback(async () => {
     try {
-
       const result = await mockAPI.getMerchants(
         timeRange,
         merchantsProps.page,
@@ -106,11 +104,10 @@ function App() {
     } finally {
       setMerchantsProps(prev => ({ ...prev, isLoading: false }))
     }
-  }, [merchantsProps.page, merchantsProps.pageSize, filters, merchantSort, searchQuery])
+  }, [merchantsProps.page, merchantsProps.pageSize, filters, merchantSort, searchQuery, timeRange])
 
   const handleWebSocketMessage = useCallback((message: any) => {
     if (message.type === "newTransaction") {
-      // Only update if the transaction matches our filters
       if (message.matchesFilters) {
         loadData()
         loadTransactions()

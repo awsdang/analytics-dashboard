@@ -25,7 +25,6 @@
   }
   
   export interface TransactionData {
-    transactions: Transaction[]
     totalVolume: number
     totalTransactions: number
     activeUsers: number
@@ -35,7 +34,6 @@
     userChange: number
     failedChange: number
     volumeOverTime: VolumeDataPoint[]
-    topMerchants: Merchant[]
     activityByHour: ActivityHourData[]
 }
   
