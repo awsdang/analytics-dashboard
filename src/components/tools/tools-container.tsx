@@ -1,12 +1,12 @@
 
-import { Button } from "@/components/ui/button"
-import { Download, RefreshCw } from "lucide-react"
 import { Filters } from "@/components/tools/filters"
 import { Input } from "@/components/ui/input"
 import { useStore } from "@/lib/store"
 import { useEffect, useState } from "react"
+import { ExportTool } from "./export"
+import { RefreshTool } from "./refresh"
 
-function ToolsContainer({isConnected, onRefresh, onExport}: {isConnected:boolean, onRefresh: () => void, onExport: () => void}) {
+function ToolsContainer() {
     const { setSearchQuery } = useStore()
     const [searchInput, setSearchInput] = useState<string>('')
     useEffect(() => {
@@ -26,16 +26,9 @@ function ToolsContainer({isConnected, onRefresh, onExport}: {isConnected:boolean
                 </div>
                 <div className="flex items-center gap-2">
                     <Input type="search" placeholder="Search..." className="md:w-[300px] lg:w-[400px]" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
-                    <Button variant="outline" size="sm" onClick={onRefresh}>
-                        <RefreshCw className="mr-2 h-4 w-4" />
-                        Refresh
-                        {isConnected &&
-                        <span className="ml-2 h-2 w-2 rounded-full bg-green-500" title="Real-time updates active"></span>}
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={onExport}>
-                        <Download className="mr-2 h-4 w-4" />
-                        Export
-                    </Button>
+                    <RefreshTool/>
+                    <ExportTool/>
+                   
                 </div>
             </div>
         </>
