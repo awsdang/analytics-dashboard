@@ -6,20 +6,21 @@ import { Heatmap } from "@/components/widgets/heatmap"
 import { useStore } from "@/lib/store"
 import ToolsContainer from "@/components/tools/tools-container"
 import Widget from "@/components/widgets/widgetWrapper"
-import { TransactionData, Transaction} from "@/types/transactions"
+import { TransactionData, Transaction, Merchant} from "@/types/transactions"
 import { useCallback, useEffect, useState } from "react"
 import { useWebSocket } from "@/hooks/use-websocket"
 import { mockAPI } from "@/service/api"
 import TransactionHistory from "@/components/transactions/transaction-history"
+import MerchantHistory from "@/components/merchants/merchant-history"
 
 
 function App() {
   const [data, setData] = useState<TransactionData | null>(null)
-
-  const { searchQuery, timeRange, filters, setTimeRange, setFilters, setTransactionSort, transactionSort } = useStore()
-
-
   const [transactions, setTransactions] = useState<Transaction[]>()
+  const [merchants, setMerchants] = useState<Merchant[]>()
+
+  const {  searchQuery, timeRange, filters, transactionSort, merchantSort} = useStore()
+
   const [transactionsProps,setTransactionProps] = useState(
     {
       page: 1,
@@ -29,16 +30,15 @@ function App() {
       isLoading: false,
     }
   )
-  
-
-  // const [totalItems, setTotalItems] = useState()
-
-  // const [isLoading, setIsLoading] = useState(false)
-  // const [error, setError] = useState<string | null>(null)
-  // const [page, setPage] = useState(1)
-  // const [pageSize, setPageSize] = useState(10)
-
-  // const [totalPages, setTotalPages] = useState()
+  const [merchantsProps,setMerchantsProps] = useState(
+    {
+      page: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
+      isLoading: false,
+    }
+  )
   const loadData = useCallback(async () => {
     try {
       const result = await mockAPI.getTransactionData(timeRange, {
@@ -83,8 +83,30 @@ function App() {
     }
   }, [transactionsProps.page, transactionsProps.pageSize, filters, transactionSort, searchQuery, timeRange])
   
+  const loadMerchants = useCallback(async () => {
+    try {
 
-  
+      const result = await mockAPI.getMerchants(
+        timeRange,
+        merchantsProps.page,
+        merchantsProps.pageSize,
+        filters,
+        merchantSort,
+        searchQuery.trim() !== "" ? searchQuery : undefined,
+      )
+      setMerchants(result.merchants)
+
+      setMerchantsProps(prev => ({
+        ...prev,
+        totalItems: result.totalItems,
+        totalPages: result.totalPages,
+        isLoading: false,
+      }))
+
+    } finally {
+      setMerchantsProps(prev => ({ ...prev, isLoading: false }))
+    }
+  }, [merchantsProps.page, merchantsProps.pageSize, filters, merchantSort, searchQuery])
 
   const handleWebSocketMessage = useCallback((message: any) => {
     if (message.type === "newTransaction") {
@@ -92,35 +114,25 @@ function App() {
       if (message.matchesFilters) {
         loadData()
         loadTransactions()
+        loadMerchants()
       } else {
         console.log("Transaction doesn't match current filters, ignoring update")
       }
     }
-  }, [loadData,loadTransactions])
+  }, [loadData,loadTransactions,loadMerchants])
 
-  // Set up the WebSocket connection with filters and timeRange
-  const { connectionStatus } = useWebSocket({
-    url: "wss://api.qicard.iq/transactions/ws",
+  useWebSocket({
     onMessage: handleWebSocketMessage,
     filters: filters,
     timeRange: timeRange,
   })
 
-
-
   useEffect(() => {
     loadData()
     loadTransactions()
-  }, [loadData, loadTransactions])
+    loadMerchants()
+  }, [loadData, loadTransactions, loadMerchants])
 
-  const handleRefresh = () => {
-    loadData()
-    loadTransactions()
-  }
-
-  const handleExport = () => {
-    console.log('Exporting data');
-  }
 
   return (
     <>
@@ -130,30 +142,36 @@ function App() {
           <div className="flex items-center justify-between space-y-2">
           </div>
           <div className="container flex flex-col gap-4 mx-auto">
-            <ToolsContainer onRefresh={handleRefresh} onExport={handleExport} isConnected={connectionStatus === "connected"}/>
+            <ToolsContainer/>
+            {searchQuery === "" && 
+            <>
             <Stats data={data} />
-             {/* <Widget title="Transaction Volume" description="Transaction volume over time (IQD)" >
+             <Widget title="Transaction Volume" description="Transaction volume over time (IQD)" >
               {data &&
               <VolumeChart className="h-[300px]" data={data}/>}
             </Widget>
             <Widget title="Transaction Activity" description="Heatmap by hour of day">
             {data &&
               <Heatmap  data={data}/>}
-            </Widget> */}
-
-            {/* <Widget title="Merchant transactions" description="Complete history of all merchants transactions" className="w-full">
-              <>
-
-              </>
-            </Widget>  */}
-
-            <Widget title="Transaction Ledger" description="Complete history of all transactions">
+            </Widget>
+            </>
+          }
+          
+          <Widget title="Transaction Ledger" description="Complete history of all transactions">
               <>
               { transactions && 
                 <TransactionHistory transactions={transactions} transactionsProps={transactionsProps} setTransactionProps={setTransactionProps}/>
               }
               </>
             </Widget>
+            <Widget title="Merchant transactions" description="Complete history of all merchants transactions" className="w-full">
+              <>
+              {merchants && 
+                <MerchantHistory merchants={merchants} merchantsProps={merchantsProps} setMerchantsProps={setMerchantsProps}/>
+              }
+              </>
+            </Widget> 
+
           </div>
         </div>
       </div>
