@@ -4,7 +4,7 @@ import Widget from "./widgetWrapper"
 import { TransactionData } from "@/types/transactions"
 import { cn } from "@/lib/utils"
 
-export function Stats({ data }: { data: TransactionData|null }) {
+export function Stats({ data, error }: { data: TransactionData, error?: string }) {
 
   if (!data) return null
 
@@ -39,7 +39,7 @@ export function Stats({ data }: { data: TransactionData|null }) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {stats.map((data, i) => (
-        <Widget title={data.title} Icon={data.icon} key={i}>
+        <Widget error={error} title={data.title} Icon={data.icon} key={i}>
           <div className="text-2xl font-bold">{data.value}</div>
           <p className="text-xs text-muted-foreground">
             <span

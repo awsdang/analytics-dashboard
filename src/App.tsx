@@ -6,22 +6,29 @@ import { Heatmap } from "@/components/widgets/heatmap"
 import { useStore } from "@/lib/store"
 import ToolsContainer from "@/components/tools/tools-container"
 import Widget from "@/components/widgets/widgetWrapper"
-import { TransactionData, Transaction, Merchant} from "@/types/transactions"
+import { TransactionData, Transaction, Merchant } from "@/types/transactions"
 import { useCallback, useEffect, useState } from "react"
 import { useWebSocket } from "@/hooks/use-websocket"
 import { mockAPI } from "@/service/api"
 import TransactionHistory from "@/components/transactions/transaction-history"
 import MerchantHistory from "@/components/merchants/merchant-history"
 
+interface Error {
+  dataMessage?: string
+  transactionsMessage?: string
+  merchantsMessage?: string
+}
 
 function App() {
-  const [data, setData] = useState<TransactionData | null>(null)
+  const [data, setData] = useState<TransactionData>()
   const [transactions, setTransactions] = useState<Transaction[]>()
   const [merchants, setMerchants] = useState<Merchant[]>()
+  const [error, setError] = useState<Error>({})
 
-  const {  searchQuery, timeRange, filters, transactionSort, merchantSort} = useStore()
 
-  const [transactionsProps,setTransactionProps] = useState(
+  const { searchQuery, timeRange, filters, transactionSort, merchantSort } = useStore()
+
+  const [transactionsProps, setTransactionProps] = useState(
     {
       page: 1,
       pageSize: 10,
@@ -30,7 +37,7 @@ function App() {
       isLoading: false,
     }
   )
-  const [merchantsProps,setMerchantsProps] = useState(
+  const [merchantsProps, setMerchantsProps] = useState(
     {
       page: 1,
       pageSize: 10,
@@ -54,7 +61,7 @@ function App() {
       })
       setData(result)
     } catch (err) {
-      console.error("Failed to fetch transaction data:", err)
+      setError(prev => ({ ...prev, dataMessage: (err as any).message }))
     } finally {
     }
   }, [timeRange, filters])
@@ -73,15 +80,17 @@ function App() {
 
       setTransactionProps({
         ...transactionsProps,
-        totalItems: (result as any).totalItems, 
-        totalPages: (result as any).totalPages, 
+        totalItems: (result as any).totalItems,
+        totalPages: (result as any).totalPages,
         isLoading: false
       })
+    } catch (err) {
+      setError(prev => ({ ...prev, transactionsMessage: (err as any).message }))
     } finally {
       setTransactionProps(prev => ({ ...prev, isLoading: false }))
     }
   }, [transactionsProps.page, transactionsProps.pageSize, filters, transactionSort, searchQuery, timeRange])
-  
+
   const loadMerchants = useCallback(async () => {
     try {
       const result = await mockAPI.getMerchants(
@@ -100,7 +109,8 @@ function App() {
         totalPages: result.totalPages,
         isLoading: false,
       }))
-
+    } catch (err) {
+      setError(prev => ({ ...prev, merchantsMessage: (err as any).message }))
     } finally {
       setMerchantsProps(prev => ({ ...prev, isLoading: false }))
     }
@@ -116,7 +126,7 @@ function App() {
         console.log("Transaction doesn't match current filters, ignoring update")
       }
     }
-  }, [loadData,loadTransactions,loadMerchants])
+  }, [loadData, loadTransactions, loadMerchants])
 
   useWebSocket({
     onMessage: handleWebSocketMessage,
@@ -139,35 +149,32 @@ function App() {
           <div className="flex items-center justify-between space-y-2">
           </div>
           <div className="container flex flex-col gap-4 mx-auto">
-            <ToolsContainer/>
-            {searchQuery === "" && 
-            <>
-            <Stats data={data} />
-             <Widget title="Transaction Volume" description="Transaction volume over time (IQD)" >
-              {data &&
-              <VolumeChart className="h-[300px]" data={data}/>}
-            </Widget>
-            <Widget title="Transaction Activity" description="Heatmap by hour of day">
-            {data &&
-              <Heatmap  data={data}/>}
-            </Widget>
-            </>
-          }
-          
-          <Widget title="Transaction Ledger" description="Complete history of all transactions">
+            <ToolsContainer />
+            {searchQuery === "" && data &&
               <>
-              { transactions && 
-                <TransactionHistory transactions={transactions} transactionsProps={transactionsProps} setTransactionProps={setTransactionProps}/>
-              }
+                <Stats error={error.dataMessage} data={data} />
+                <Widget error={error.dataMessage} title="Transaction Volume" description="Transaction volume over time (IQD)" >
+                  <VolumeChart className="h-[300px]" data={data} />
+                </Widget>
+                <Widget error={error.dataMessage} title="Transaction Activity" description="Heatmap by hour of day">
+                  <Heatmap data={data} />
+                </Widget>
+              </>
+            }
+            <Widget error={error.transactionsMessage} title="Transaction Ledger" description="Complete history of all transactions">
+              <>
+                {transactions &&
+                  <TransactionHistory transactions={transactions} transactionsProps={transactionsProps} setTransactionProps={setTransactionProps} />
+                }
               </>
             </Widget>
-            <Widget title="Merchant transactions" description="Complete history of all merchants transactions" className="w-full">
+            <Widget error={error.merchantsMessage} title="Top Merchants" description={`Top merchants based on transaction volume per ${timeRange}`} className="w-full">
               <>
-              {merchants && 
-                <MerchantHistory merchants={merchants} merchantsProps={merchantsProps} setMerchantsProps={setMerchantsProps}/>
-              }
+                {merchants &&
+                  <MerchantHistory merchants={merchants} merchantsProps={merchantsProps} setMerchantsProps={setMerchantsProps} />
+                }
               </>
-            </Widget> 
+            </Widget>
 
           </div>
         </div>
