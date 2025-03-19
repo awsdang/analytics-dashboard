@@ -26,7 +26,7 @@ interface StoreState {
 export const useStore = create<StoreState>((set) => ({
     refreshInterval: 5000,
     connectionStatus: "connecting",
-    timeRange: "week",
+    timeRange: "day",
     filters: {
         minAmount: undefined,
         maxAmount: undefined,
