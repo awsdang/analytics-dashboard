@@ -18,20 +18,28 @@ The exported data examples for transaction and merchant datasets in CSV format. 
 Here are some screenshots showcasing the application:
 
 1. **Main View**  
-    ![main](images/main.png)  
     Overview of key metrics and transaction volume.
+    ![main](images/main.png)  
 
 2. **Tools**  
-    ![tools](images/tools.png)  
     Filtering, sorting, and exporting transaction data.
+    ![tools](images/tools.png)  
 
 3. **Heatmap Transaction**  
-    ![heatmap-transactions](images/heatmap-transactions.png)  
     Visualizes transaction activity by time periods.
+    ![heatmap-transactions](images/heatmap-transactions.png)  
 
 4. **Top Merchants**  
-    ![top-merchants](images/top-merchants.png)  
     Displays top merchants by transaction count or value.
+    ![top-merchants](images/top-merchants.png)  
+    
+5. **Transaction Detail Dialog**  
+    Displays a dialog of the details for the transaction.
+    ![transaction-details](images/transaction-details.png)  
+
+6. **Merchant Details Dialog**  
+    Displays a dialog of the details for the merchants
+    ![merchant-details](images/merchant-details.png)  
 
 
 ## Design Decisions
