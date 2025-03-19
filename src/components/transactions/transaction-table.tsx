@@ -1,31 +1,22 @@
 
 
-import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from "lucide-react"
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Pagination } from "@/components/transactions/pagination"
-
+import TransactionDetails from "./transaction-details"
 import { Transaction } from "@/types/transactions"
-import { SortOptions } from "@/types/dashboard"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import DialogContainer from "./transaction-dialog"
+import { TransactionSortOptions } from "@/types/dashboard"
+import DialogContainer from "./dialog"
 
 interface TransactionTableProps {
   transactions: Transaction[]
   isLoading: boolean
   onSort: (field: keyof Transaction) => void
-  currentSort: SortOptions
+  currentSort: TransactionSortOptions
   page: number
   pageSize: number
   totalItems: number
@@ -209,7 +200,10 @@ export function TransactionTable({
                 </TableCell>
                 <TableCell>{transaction.location}</TableCell>
                 <TableCell>
-                    <DialogContainer transaction={transaction} />
+
+                    <DialogContainer title={'View transaction details'}>
+                    <TransactionDetails transactionId={transaction.id}/>
+                    </DialogContainer>
                 </TableCell>
               </TableRow>
             ))}

@@ -14,11 +14,9 @@ export default function TransactionHistory({transactions, transactionsProps, set
   if (!transactions) {
     return null
   }
-  const { setTransactionSort, transactionSort} = useStore()
-
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
-  
+  const {transactionSort, setTransactionSort} = useStore()
+  const [page, setPage] = useState(transactionsProps.page)
+  const [pageSize, setPageSize] = useState(transactionsProps.pageSize)
   useEffect(() => {
     setTransactionProps({
       ...transactionsProps,

@@ -26,7 +26,7 @@ export function Pagination({
 
   return (
     <div className="flex items-center justify-between">
-      <div className="text-sm text-muted-foreground">
+      <div className="text-sm text-muted-foreground hidden md:block">
         Showing <span className="font-medium">{totalItems > 0 ? startItem : 0}</span> to{" "}
         <span className="font-medium">{endItem}</span> of <span className="font-medium">{totalItems}</span> transactions
       </div>

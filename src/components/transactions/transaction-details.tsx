@@ -1,9 +1,6 @@
-// "use client"
 
 import { useEffect, useState } from "react"
-import { ArrowLeft, Calendar, CreditCard, MapPin, RefreshCw, User } from "lucide-react"
-// import Link from "next/link"
-
+import { Calendar, CreditCard, MapPin, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -11,7 +8,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { mockAPI} from "@/service/api"
 import { Transaction } from "@/types/transactions"
-import { MerchantTransactions } from "@/components/transactions/merchant-transactions"
 
 interface TransactionDetailsProps {
   transactionId: string
