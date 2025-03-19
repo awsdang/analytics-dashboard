@@ -91,7 +91,7 @@ export default function MerchantDetails({ merchantId }: { merchantId: string }) 
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="max-h-[70vh] overflow-auto">
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>

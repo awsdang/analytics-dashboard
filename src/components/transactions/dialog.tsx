@@ -19,7 +19,7 @@ const DialogContainer = ({children, title}:{children:
                     <span className="sr-only">{title}</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="bg-transparent border-none shadow-none">
+            <DialogContent className="bg-transparent border-none shadow-none p-0">
                 {children}
             </DialogContent>
         </Dialog>
